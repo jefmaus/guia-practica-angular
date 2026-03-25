@@ -3,762 +3,1636 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Angular — Guía Práctica</title>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<title>Angular 21 — Guía Definitiva</title>
 <style>
-  :root {
-    --bg:#0a0e1a;--surface:#111827;--surface2:#1a2235;--border:#1e2d45;
-    --green:#6ee7b7;--green-dim:#34d399;--blue:#60a5fa;--yellow:#fcd34d;
-    --pink:#f472b6;--orange:#fb923c;--text:#e2e8f0;--text-dim:#94a3b8;
-    --code-bg:#0d1117;--ng:#ff6b8a;--ng-soft:rgba(255,107,138,0.12);--ng-border:rgba(255,107,138,0.35);
-  }
-  *{box-sizing:border-box;margin:0;padding:0}
-  html{scroll-behavior:smooth}
-  body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.7}
-  .hero{background:linear-gradient(135deg,#0a0e1a 0%,#1a0a10 50%,#0a0e1a 100%);border-bottom:1px solid var(--border);padding:80px 40px 60px;text-align:center;position:relative;overflow:hidden}
-  .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(221,0,49,.10) 0%,transparent 70%);pointer-events:none}
-  .hero-badge{display:inline-block;background:var(--ng-soft);border:1px solid var(--ng-border);color:var(--ng);font-family:'JetBrains Mono',monospace;font-size:11px;padding:4px 14px;border-radius:20px;letter-spacing:2px;text-transform:uppercase;margin-bottom:24px}
-  .hero h1{font-family:'Syne',sans-serif;font-size:56px;font-weight:800;line-height:1.2;margin-bottom:16px;letter-spacing:-1px}
-  @media(max-width:600px){.hero h1{font-size:36px}}
-  .hero h1 span{color:var(--ng)}
-  .hero p{color:var(--text-dim);font-size:16px;max-width:560px;margin:0 auto 36px}
-  .hero-tags{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
-  .tag{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:4px 12px;font-size:12px;color:var(--text-dim);font-family:'JetBrains Mono',monospace}
-  .container{max-width:1100px;margin:0 auto;padding:0 24px}
-  .nav{position:sticky;top:0;z-index:100;background:rgba(10,14,26,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:12px 24px;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}
-  .nav::-webkit-scrollbar{display:none}
-  .nav a{white-space:nowrap;text-decoration:none;color:var(--text-dim);font-size:12px;font-family:'JetBrains Mono',monospace;padding:5px 12px;border-radius:5px;border:1px solid transparent;transition:all .2s}
-  .nav a:hover{color:var(--ng);border-color:var(--ng-border);background:var(--ng-soft)}
-  section{padding:64px 0;border-bottom:1px solid var(--border);scroll-margin-top:56px}
-  .section-header{margin-bottom:40px;display:flex;align-items:center;gap:16px}
-  .section-icon{width:44px;height:44px;background:var(--ng-soft);border:1px solid var(--ng-border);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
-  .section-header h2{font-family:'Syne',sans-serif;font-size:26px;font-weight:700}
-  .section-header p{color:var(--text-dim);font-size:13px;margin-top:2px}
-  .glossary-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px}
-  .term-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;transition:border-color .2s,transform .2s}
-  .term-card:hover{border-color:var(--ng-border);transform:translateY(-2px)}
-  .term-header{display:flex;align-items:center;gap:10px;margin-bottom:10px}
-  .term-name{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:var(--ng);background:var(--ng-soft);border:1px solid var(--ng-border);padding:2px 10px;border-radius:5px}
-  .term-category{font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;font-family:'JetBrains Mono',monospace}
-  .term-def{font-size:13px;color:var(--text-dim);margin-bottom:12px;line-height:1.6}
-  .term-use{font-size:12px;color:var(--yellow);background:rgba(252,211,77,.06);border-left:2px solid var(--yellow);padding:4px 10px;border-radius:0 4px 4px 0;margin-bottom:12px}
-  pre{background:var(--code-bg);border:1px solid #1e2d3d;border-radius:8px;padding:12px 14px;overflow-x:auto;font-family:'JetBrains Mono',monospace;font-size:11.5px;line-height:1.6;color:#e2e8f0}
-  .kw{color:#c792ea}.dc{color:var(--ng)}.st{color:#c3e88d}.cm{color:#546e7a;font-style:italic}.cl{color:#ffcb6b}.fn{color:#82aaff}.nm{color:#f78c6c}.at{color:#80cbc4}.tg{color:#f07178}
-  .infograph{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:32px;margin-bottom:24px}
-  .infograph-title{font-family:'Syne',sans-serif;font-size:17px;font-weight:700;margin-bottom:24px;display:flex;align-items:center;gap:10px}
-  .infograph-title span{color:var(--ng)}
-  .arch-flow{display:flex;align-items:center;gap:0;flex-wrap:wrap;justify-content:center}
-  .arch-layer{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:14px 18px;text-align:center;min-width:110px}
-  .arch-layer .layer-icon{font-size:20px;margin-bottom:5px}
-  .arch-layer .layer-name{font-family:'Syne',sans-serif;font-size:13px;font-weight:700}
-  .arch-layer .layer-ann{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--ng);margin-top:4px}
-  .arch-layer .layer-desc{font-size:11px;color:var(--text-dim);margin-top:4px}
-  .arch-arrow{font-size:20px;color:var(--ng);padding:0 6px;flex-shrink:0}
-  .compare-table{width:100%;border-collapse:collapse;font-size:13px}
-  .compare-table th{background:var(--surface2);color:var(--ng);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;text-transform:uppercase;padding:10px 16px;text-align:left;border-bottom:1px solid var(--border)}
-  .compare-table td{padding:10px 16px;border-bottom:1px solid rgba(30,45,69,.5);color:var(--text-dim);vertical-align:top}
-  .compare-table tr:hover td{background:rgba(255,255,255,.02)}
-  .compare-table td:first-child{font-weight:500;color:var(--text)}
-  .check{color:var(--green)}.cross{color:#f87171}
-  .ann-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
-  .ann-group{background:var(--surface2);border-radius:10px;padding:16px;border:1px solid var(--border)}
-  .ann-group-title{font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border)}
-  .ann-item{display:flex;align-items:flex-start;gap:8px;margin-bottom:8px;font-size:12px}
-  .ann-item code{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ng);background:var(--ng-soft);padding:1px 6px;border-radius:3px;flex-shrink:0}
-  .ann-item span{color:var(--text-dim)}
-  .folder-tree{background:var(--code-bg);border-radius:10px;padding:20px 24px;border:1px solid #1e2d3d;overflow-x:auto}
-  .ft-row{display:block;font-family:'JetBrains Mono',monospace;font-size:12.5px;line-height:1.9;white-space:pre}
-  .ft-tree{color:#374151}.folder-tree .dir{color:var(--blue)}.folder-tree .file{color:var(--text)}.folder-tree .yml{color:var(--yellow)}.folder-tree .note{color:#546e7a;font-size:11px}
-  .steps-flow{display:flex;flex-direction:column;gap:10px}
-  .step-item{display:flex;align-items:flex-start;gap:16px;background:var(--surface2);border-radius:8px;padding:14px 18px;border:1px solid var(--border)}
-  .step-num{background:var(--ng);color:#000;font-family:'Syne',sans-serif;font-weight:800;font-size:12px;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
-  .step-content{flex:1}
-  .step-content strong{font-size:13px;color:var(--text);display:block;margin-bottom:2px}
-  .step-content span{font-size:12px;color:var(--text-dim)}
-  .step-connector{width:2px;height:10px;background:var(--border);margin-left:11px}
-  .dep-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
-  .dep-card{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:14px;transition:border-color .2s}
-  .dep-card:hover{border-color:rgba(96,165,250,.4)}
-  .dep-name{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--blue);margin-bottom:4px;font-weight:700}
-  .dep-desc{font-size:12px;color:var(--text-dim)}
-  .pillars-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px}
-  .pillar-card{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:20px;text-align:center;transition:transform .2s,border-color .2s}
-  .pillar-card:hover{transform:translateY(-3px);border-color:var(--ng-border)}
-  .pillar-icon{font-size:32px;margin-bottom:10px}
-  .pillar-name{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--ng);margin-bottom:6px}
-  .pillar-desc{font-size:12px;color:var(--text-dim)}
-  .lifecycle{display:flex;flex-direction:column;gap:0}
-  .lc-step{display:grid;grid-template-columns:160px 1fr;gap:16px;align-items:start;padding:14px 0;border-bottom:1px dashed var(--border)}
-  .lc-step:last-child{border-bottom:none}
-  .lc-label{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--orange);background:rgba(251,146,60,.08);border:1px solid rgba(251,146,60,.2);padding:3px 8px;border-radius:4px;text-align:center}
-  .lc-desc{font-size:13px;color:var(--text-dim)}
-  .lc-desc strong{color:var(--text)}
-  .signal-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
-  .signal-card{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:16px;border-left:3px solid var(--ng)}
-  .signal-title{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--ng);font-weight:700;margin-bottom:6px}
-  .signal-desc{font-size:12px;color:var(--text-dim);margin-bottom:8px}
-  footer{text-align:center;padding:48px 24px;color:var(--text-dim);font-size:12px;font-family:'JetBrains Mono',monospace}
-  @media(max-width:640px){.arch-flow{flex-direction:column}.arch-arrow{transform:rotate(90deg)}.glossary-grid{grid-template-columns:1fr}.lc-step{grid-template-columns:1fr}}
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+:root {
+  --bg: #0d0d0d;
+  --bg2: #141414;
+  --bg3: #1a1a1a;
+  --bg4: #222222;
+  --bg5: #2a2a2a;
+  --border: #2e2e2e;
+  --border2: #3a3a3a;
+  --text: #e8e8e8;
+  --text2: #a0a0a0;
+  --text3: #6a6a6a;
+  --red: #dd0031;
+  --red2: #ff1a4b;
+  --red-dim: rgba(221,0,49,0.12);
+  --red-glow: rgba(221,0,49,0.06);
+  --blue: #4fc3f7;
+  --green: #4ade80;
+  --yellow: #fbbf24;
+  --purple: #c084fc;
+  --orange: #fb923c;
+  --pink: #f472b6;
+  --teal: #2dd4bf;
+  --font: 'Inter', system-ui, sans-serif;
+  --mono: 'JetBrains Mono', monospace;
+  --radius: 10px;
+  --radius-sm: 6px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* ── LAYOUT ── */
+.app-layout {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  grid-template-rows: 60px 1fr;
+  min-height: 100vh;
+}
+
+/* ── TOPBAR ── */
+.topbar {
+  grid-column: 1 / -1;
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  gap: 16px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.topbar-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--text);
+  text-decoration: none;
+}
+.logo-badge {
+  background: var(--red);
+  color: #fff;
+  width: 30px; height: 30px;
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 800;
+}
+.topbar-sub {
+  font-size: 13px;
+  color: var(--text3);
+  border-left: 1px solid var(--border);
+  padding-left: 16px;
+}
+.topbar-badges {
+  display: flex; gap: 6px;
+  margin-left: auto;
+  flex-wrap: wrap;
+}
+.tbadge {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 20px;
+  border: 1px solid var(--border2);
+  color: var(--text2);
+}
+.tbadge.new { border-color: rgba(221,0,49,.4); color: #ff6b8a; background: rgba(221,0,49,.08); }
+
+/* ── SIDEBAR ── */
+.sidebar {
+  background: var(--bg2);
+  border-right: 1px solid var(--border);
+  overflow-y: auto;
+  position: sticky;
+  top: 60px;
+  height: calc(100vh - 60px);
+  padding: 16px 0;
+}
+.sidebar::-webkit-scrollbar { width: 4px; }
+.sidebar::-webkit-scrollbar-track { background: transparent; }
+.sidebar::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+
+.sidebar-section {
+  padding: 8px 16px 4px;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--text3);
+  margin-top: 8px;
+}
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  font-size: 13px;
+  color: var(--text2);
+  text-decoration: none;
+  border-radius: 0;
+  transition: all .15s;
+  border-left: 2px solid transparent;
+  cursor: pointer;
+}
+.nav-item:hover { color: var(--text); background: var(--bg3); }
+.nav-item.active { color: #fff; background: var(--red-dim); border-left-color: var(--red); }
+.nav-item .icon { font-size: 14px; width: 18px; text-align: center; flex-shrink: 0; }
+.nav-new {
+  font-size: 9px; font-weight: 700;
+  background: rgba(221,0,49,.2); color: #ff8fa3;
+  padding: 1px 5px; border-radius: 4px;
+  margin-left: auto;
+}
+
+/* ── MAIN ── */
+.main {
+  overflow-y: auto;
+  padding: 0;
+}
+.main::-webkit-scrollbar { width: 6px; }
+.main::-webkit-scrollbar-track { background: transparent; }
+.main::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+
+/* ── HERO ── */
+.hero {
+  background: linear-gradient(160deg, #0d0d0d 0%, #120007 50%, #0d0d0d 100%);
+  border-bottom: 1px solid var(--border);
+  padding: 60px 48px 48px;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -100px; right: -100px;
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(221,0,49,.12) 0%, transparent 70%);
+  border-radius: 50%;
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: -50px; left: 10%;
+  width: 300px; height: 300px;
+  background: radial-gradient(circle, rgba(221,0,49,.06) 0%, transparent 70%);
+  border-radius: 50%;
+}
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 12px; font-weight: 600;
+  color: #ff6b8a;
+  background: rgba(221,0,49,.1);
+  border: 1px solid rgba(221,0,49,.3);
+  border-radius: 20px;
+  padding: 4px 14px;
+  margin-bottom: 16px;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+.hero h1 {
+  font-size: 42px;
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 16px;
+  color: #fff;
+}
+.hero h1 span { color: var(--red); }
+.hero-desc {
+  font-size: 16px;
+  color: var(--text2);
+  max-width: 620px;
+  margin-bottom: 28px;
+  line-height: 1.65;
+}
+.hero-tags {
+  display: flex; flex-wrap: wrap; gap: 8px;
+  margin-bottom: 32px;
+}
+.hero-tag {
+  font-size: 12px; font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 20px;
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  color: var(--text2);
+}
+.hero-tag.hot { border-color: rgba(221,0,49,.4); color: #ff8fa3; background: rgba(221,0,49,.07); }
+.hero-stats {
+  display: flex; gap: 24px; flex-wrap: wrap;
+}
+.hstat {
+  text-align: center;
+}
+.hstat-n { font-size: 24px; font-weight: 800; color: #fff; line-height: 1; }
+.hstat-l { font-size: 11px; color: var(--text3); margin-top: 3px; text-transform: uppercase; letter-spacing: .05em; }
+
+/* ── SECTION ── */
+.section {
+  padding: 48px 48px 0;
+  scroll-margin-top: 80px;
+}
+.section:last-child { padding-bottom: 64px; }
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 8px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+.section-icon {
+  width: 42px; height: 42px;
+  background: var(--red-dim);
+  border: 1px solid rgba(221,0,49,.25);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+.section-header h2 {
+  font-size: 22px;
+  font-weight: 700;
+  color: #fff;
+}
+.section-header p {
+  font-size: 13px;
+  color: var(--text3);
+  margin-top: 2px;
+}
+.section-badge {
+  margin-left: auto;
+  font-size: 11px; font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 20px;
+  background: rgba(221,0,49,.12);
+  color: #ff8fa3;
+  border: 1px solid rgba(221,0,49,.25);
+  flex-shrink: 0;
+}
+
+/* ── CARDS GRID ── */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+  margin-top: 20px;
+}
+.cards-grid.cols2 { grid-template-columns: repeat(2, 1fr); }
+.cards-grid.cols3 { grid-template-columns: repeat(3, 1fr); }
+
+.card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  transition: border-color .2s;
+}
+.card:hover { border-color: var(--border2); }
+
+.card-header {
+  display: flex; align-items: center; gap: 10px;
+  padding: 14px 16px 12px;
+  border-bottom: 1px solid var(--border);
+}
+.card-icon {
+  width: 32px; height: 32px;
+  border-radius: 7px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 700; flex-shrink: 0;
+}
+.ci-red { background: rgba(221,0,49,.15); color: #ff6b8a; }
+.ci-blue { background: rgba(79,195,247,.12); color: var(--blue); }
+.ci-green { background: rgba(74,222,128,.1); color: var(--green); }
+.ci-yellow { background: rgba(251,191,36,.1); color: var(--yellow); }
+.ci-purple { background: rgba(192,132,252,.1); color: var(--purple); }
+.ci-orange { background: rgba(251,146,60,.1); color: var(--orange); }
+.ci-teal { background: rgba(45,212,191,.1); color: var(--teal); }
+.ci-pink { background: rgba(244,114,182,.1); color: var(--pink); }
+
+.card-title { font-size: 14px; font-weight: 600; color: #fff; }
+.card-subtitle { font-size: 11px; color: var(--text3); margin-top: 1px; }
+.card-tag {
+  margin-left: auto; flex-shrink: 0;
+  font-size: 10px; font-weight: 700;
+  padding: 2px 8px; border-radius: 10px;
+  text-transform: uppercase; letter-spacing: .04em;
+}
+.tag-core { background: rgba(79,195,247,.12); color: var(--blue); }
+.tag-new { background: rgba(74,222,128,.1); color: var(--green); }
+.tag-exp { background: rgba(251,191,36,.1); color: var(--yellow); }
+.tag-perf { background: rgba(251,146,60,.1); color: var(--orange); }
+.tag-di { background: rgba(192,132,252,.1); color: var(--purple); }
+.tag-mod { background: rgba(45,212,191,.1); color: var(--teal); }
+
+.card-body { padding: 14px 16px; }
+.card-desc { font-size: 13px; color: var(--text2); line-height: 1.6; margin-bottom: 12px; }
+.card-tip {
+  display: flex; gap: 8px; align-items: flex-start;
+  background: rgba(221,0,49,.05);
+  border-left: 2px solid rgba(221,0,49,.4);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  padding: 8px 10px;
+  font-size: 12px; color: var(--text2); line-height: 1.5;
+  margin-bottom: 12px;
+}
+.card-tip-icon { color: var(--red); flex-shrink: 0; }
+.card-warn {
+  display: flex; gap: 8px; align-items: flex-start;
+  background: rgba(251,191,36,.05);
+  border-left: 2px solid rgba(251,191,36,.4);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  padding: 8px 10px;
+  font-size: 12px; color: var(--text2); line-height: 1.5;
+  margin-top: 8px;
+}
+.card-ok {
+  display: flex; gap: 8px; align-items: flex-start;
+  background: rgba(74,222,128,.05);
+  border-left: 2px solid rgba(74,222,128,.35);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  padding: 8px 10px;
+  font-size: 12px; color: var(--text2); line-height: 1.5;
+  margin-top: 8px;
+}
+
+/* ── CODE BLOCKS ── */
+.code-wrap { margin-top: 8px; }
+.code-label {
+  display: flex; align-items: center; justify-content: space-between;
+  background: var(--bg4);
+  border: 1px solid var(--border);
+  border-bottom: none;
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  padding: 6px 12px;
+  font-size: 11px; font-weight: 600;
+  color: var(--text3);
+  text-transform: uppercase; letter-spacing: .05em;
+}
+.code-lang {
+  font-size: 10px; font-weight: 700;
+  padding: 2px 7px; border-radius: 4px;
+  background: rgba(221,0,49,.15); color: #ff8fa3;
+}
+pre {
+  background: var(--bg4);
+  border: 1px solid var(--border);
+  border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+  padding: 14px 16px;
+  overflow-x: auto;
+  font-family: var(--mono);
+  font-size: 12px;
+  line-height: 1.65;
+}
+pre::-webkit-scrollbar { height: 4px; }
+pre::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+.kw { color: #c678dd; }
+.fn { color: #61afef; }
+.str { color: #98c379; }
+.cm { color: #5c6370; font-style: italic; }
+.num { color: #d19a66; }
+.dec { color: #e5c07b; }
+.op { color: #56b6c2; }
+.tp { color: #4fc3f7; }
+
+/* ── STANDALONE CODE (no label) ── */
+.code-block {
+  background: var(--bg4);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  overflow-x: auto;
+  font-family: var(--mono);
+  font-size: 12px;
+  line-height: 1.65;
+  margin-top: 8px;
+  white-space: pre;
+}
+
+/* ── FLOW DIAGRAM ── */
+.flow-diagram {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: wrap;
+  margin: 20px 0;
+  padding: 20px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow-x: auto;
+}
+.flow-node {
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  border-radius: 8px;
+  padding: 10px 14px;
+  text-align: center;
+  min-width: 90px;
+}
+.flow-node .fn-icon { font-size: 18px; margin-bottom: 4px; }
+.flow-node .fn-title { font-size: 12px; font-weight: 600; color: #fff; }
+.flow-node .fn-sub { font-size: 10px; color: var(--text3); margin-top: 2px; }
+.flow-arrow { color: var(--text3); font-size: 16px; flex-shrink: 0; }
+
+/* ── BLOCKS GRID ── */
+.blocks-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 12px;
+  margin: 20px 0;
+}
+.block-item {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 14px;
+  transition: border-color .2s;
+}
+.block-item:hover { border-color: rgba(221,0,49,.3); }
+.block-item .bi-icon { font-size: 22px; margin-bottom: 6px; }
+.block-item .bi-title { font-size: 13px; font-weight: 600; color: #fff; margin-bottom: 4px; }
+.block-item .bi-desc { font-size: 11px; color: var(--text3); line-height: 1.4; }
+
+/* ── LIFECYCLE STEPS ── */
+.lc-steps { display: flex; flex-direction: column; margin: 20px 0; }
+.lc-step { display: flex; gap: 0; align-items: stretch; }
+.lc-left { display: flex; flex-direction: column; align-items: center; width: 44px; flex-shrink: 0; }
+.lc-dot {
+  width: 28px; height: 28px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700; flex-shrink: 0;
+}
+.lc-line { flex: 1; width: 1px; background: var(--border2); margin: 2px 0; }
+.lc-step:last-child .lc-line { display: none; }
+.lc-content { padding: 2px 0 16px 12px; flex: 1; }
+.lc-name { font-size: 13px; font-weight: 700; color: #fff; margin-bottom: 3px; font-family: var(--mono); }
+.lc-desc { font-size: 12px; color: var(--text2); line-height: 1.5; }
+
+/* ── SIGNALS PRIMITIVES ── */
+.signals-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin: 20px 0;
+}
+.signal-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.signal-card-head {
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--border);
+  font-family: var(--mono);
+  font-size: 14px; font-weight: 600;
+  color: #c678dd;
+}
+.signal-card-desc {
+  padding: 10px 14px;
+  font-size: 12px; color: var(--text2); line-height: 1.55;
+}
+.signal-card pre { border-radius: 0; border: none; border-top: 1px solid var(--border); }
+
+/* ── REACTIVE FLOW ── */
+.reactive-flow {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 20px 0;
+  padding: 20px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+.rf-row { display: flex; gap: 8px; align-items: stretch; }
+.rf-box {
+  flex: 1; padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 12px; font-weight: 600; text-align: center;
+}
+.rf-box small { display: block; font-weight: 400; font-size: 11px; opacity: .75; margin-top: 3px; }
+.rf-b-sig { background: rgba(192,132,252,.1); color: var(--purple); border: 1px solid rgba(192,132,252,.2); }
+.rf-b-com { background: rgba(79,195,247,.1); color: var(--blue); border: 1px solid rgba(79,195,247,.2); }
+.rf-b-eff { background: rgba(251,191,36,.08); color: var(--yellow); border: 1px solid rgba(251,191,36,.2); }
+.rf-b-res { background: rgba(244,114,182,.1); color: var(--pink); border: 1px solid rgba(244,114,182,.2); }
+.rf-b-dom { background: rgba(74,222,128,.08); color: var(--green); border: 1px solid rgba(74,222,128,.2); }
+.rf-arrow { text-align: center; color: var(--text3); font-size: 14px; }
+.rf-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; color: var(--text3); text-align: center; margin: 4px 0; }
+
+/* ── DIRECTIVES TABLE ── */
+.dir-cols { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin: 20px 0; }
+.dir-group { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius-sm); overflow: hidden; }
+.dir-group-head { background: var(--bg3); padding: 8px 12px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--text3); border-bottom: 1px solid var(--border); }
+.dir-item { padding: 7px 12px; border-bottom: 1px solid var(--border); font-size: 12px; }
+.dir-item:last-child { border-bottom: none; }
+.dir-item code { font-family: var(--mono); color: var(--blue); font-size: 11px; }
+.dir-item-desc { font-size: 11px; color: var(--text3); margin-top: 1px; }
+
+/* ── DATA BINDING TABLE ── */
+.table-wrap { overflow-x: auto; margin: 16px 0; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+th { background: var(--bg3); color: var(--text2); font-weight: 600; padding: 10px 14px; text-align: left; border: 1px solid var(--border); font-size: 12px; }
+td { padding: 10px 14px; border: 1px solid var(--border); color: var(--text2); vertical-align: top; line-height: 1.5; }
+td code { font-family: var(--mono); color: var(--blue); font-size: 11px; background: var(--bg4); padding: 1px 5px; border-radius: 3px; }
+tr:hover td { background: var(--bg3); }
+
+/* ── SSR DECISION ── */
+.ssr-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 20px 0; }
+.ssr-col { border-radius: var(--radius-sm); padding: 16px; }
+.ssr-col.yes { background: rgba(74,222,128,.05); border: 1px solid rgba(74,222,128,.2); }
+.ssr-col.no { background: rgba(221,0,49,.04); border: 1px solid rgba(221,0,49,.15); }
+.ssr-col-label { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 10px; }
+.ssr-col.yes .ssr-col-label { color: var(--green); }
+.ssr-col.no .ssr-col-label { color: var(--red); }
+.ssr-item { font-size: 12px; color: var(--text2); padding: 3px 0; display: flex; gap: 6px; line-height: 1.5; }
+.ssr-item::before { content: '→'; flex-shrink: 0; color: var(--text3); }
+
+/* ── VS SECTION ── */
+.vs-grid { display: flex; flex-direction: column; gap: 14px; margin-top: 20px; }
+.vs-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; }
+.vs-title { font-size: 11px; font-weight: 700; color: var(--text3); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 12px; }
+.vs-row { display: grid; grid-template-columns: 1fr auto 1fr; gap: 10px; align-items: start; }
+.vs-side { background: var(--bg3); border-radius: var(--radius-sm); padding: 12px; border: 1px solid var(--border); }
+.vs-side.win { border-color: rgba(74,222,128,.35); background: rgba(74,222,128,.04); }
+.vs-side-name { font-size: 13px; font-weight: 700; margin-bottom: 5px; color: var(--text2); }
+.vs-side.win .vs-side-name { color: var(--green); }
+.vs-side-desc { font-size: 12px; color: var(--text3); line-height: 1.5; }
+.vs-divider { display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 800; color: var(--red); padding-top: 10px; }
+.verdict { margin-top: 10px; padding: 8px 12px; background: rgba(74,222,128,.05); border-radius: var(--radius-sm); font-size: 12px; color: var(--text2); line-height: 1.5; border: 1px solid rgba(74,222,128,.15); }
+.verdict strong { color: var(--green); }
+
+/* ── EVOLUTION TIMELINE ── */
+.timeline { display: flex; flex-direction: column; gap: 0; margin: 20px 0; }
+.tl-item { display: flex; gap: 0; }
+.tl-left { display: flex; flex-direction: column; align-items: center; width: 36px; flex-shrink: 0; }
+.tl-dot { width: 24px; height: 24px; border-radius: 50%; background: var(--red-dim); border: 2px solid rgba(221,0,49,.4); flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+.tl-dot.current { background: var(--red); border-color: var(--red); }
+.tl-line { flex: 1; width: 1px; background: var(--border2); margin: 2px 0; }
+.tl-item:last-child .tl-line { display: none; }
+.tl-content { padding: 0 0 16px 12px; flex: 1; }
+.tl-version { font-size: 13px; font-weight: 700; color: #fff; margin-bottom: 3px; font-family: var(--mono); }
+.tl-desc { font-size: 12px; color: var(--text2); line-height: 1.5; }
+.tl-badge { display: inline-block; font-size: 10px; font-weight: 700; padding: 1px 6px; border-radius: 4px; background: rgba(221,0,49,.15); color: #ff8fa3; margin-bottom: 3px; }
+
+/* ── STRUCT DIR TREE ── */
+.tree {
+  background: var(--bg4);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 16px 20px;
+  font-family: var(--mono);
+  font-size: 12px;
+  line-height: 1.8;
+  color: var(--text2);
+  margin: 16px 0;
+  overflow-x: auto;
+}
+.tree .dir { color: var(--blue); }
+.tree .file { color: var(--text2); }
+.tree .comment { color: var(--text3); font-style: italic; }
+
+/* ── ECOSYSTEM CARDS ── */
+.eco-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 12px;
+  margin-top: 20px;
+}
+.eco-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  transition: border-color .2s;
+}
+.eco-card:hover { border-color: var(--border2); }
+.eco-name { font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 4px; display: flex; align-items: center; gap: 8px; }
+.eco-cat { font-size: 10px; font-weight: 600; padding: 2px 7px; border-radius: 10px; }
+.eco-desc { font-size: 12px; color: var(--text3); line-height: 1.55; }
+
+/* ── INFO BOX ── */
+.info-box {
+  background: rgba(79,195,247,.05);
+  border: 1px solid rgba(79,195,247,.2);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  font-size: 12px; color: var(--text2); line-height: 1.6;
+  margin: 14px 0;
+}
+.info-box strong { color: var(--blue); }
+
+.warn-box {
+  background: rgba(251,191,36,.05);
+  border: 1px solid rgba(251,191,36,.2);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  font-size: 12px; color: var(--text2); line-height: 1.6;
+  margin: 14px 0;
+}
+
+/* ── FULL-WIDTH CARD ── */
+.full-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-top: 20px;
+}
+.full-card-head {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  font-size: 14px; font-weight: 600; color: #fff;
+  display: flex; align-items: center; gap: 8px;
+}
+.full-card-body { padding: 16px; }
+
+/* ── CHECKLIST ── */
+.checklist-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 16px; }
+.cl-box { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px; }
+.cl-title { font-size: 13px; font-weight: 700; color: #fff; margin-bottom: 10px; }
+.cl-item { font-size: 12px; color: var(--text2); padding: 3px 0; line-height: 1.5; display: flex; gap: 8px; align-items: flex-start; }
+.cl-item .ok { color: var(--green); flex-shrink: 0; }
+.cl-item .bad { color: var(--red); flex-shrink: 0; }
+.cl-box.danger { border-color: rgba(221,0,49,.2); }
+
+/* ── FORMS COMPARISON ── */
+.forms-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 16px 0; }
+.form-card { background: var(--bg2); border-radius: var(--radius-sm); padding: 14px; }
+.form-card-name { font-size: 13px; font-weight: 700; margin-bottom: 8px; }
+.form-card-row { font-size: 12px; color: var(--text3); padding: 3px 0; line-height: 1.5; }
+
+/* ── RESOURCE STATES ── */
+.res-states { display: flex; flex-direction: column; gap: 4px; margin: 14px 0; }
+.res-state { padding: 9px 12px; border-radius: var(--radius-sm); font-size: 12px; font-weight: 600; }
+.rs-idle { background: rgba(107,114,128,.1); color: var(--text3); border: 1px solid var(--border); }
+.rs-loading { background: rgba(79,195,247,.08); color: var(--blue); border: 1px solid rgba(79,195,247,.2); }
+.rs-ok { background: rgba(74,222,128,.07); color: var(--green); border: 1px solid rgba(74,222,128,.2); }
+.rs-err { background: rgba(221,0,49,.07); color: #ff8fa3; border: 1px solid rgba(221,0,49,.2); }
+.res-state small { font-weight: 400; opacity: .8; margin-left: 6px; }
+
+/* ── FOOTER ── */
+.footer {
+  padding: 32px 48px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px; color: var(--text3);
+}
+.footer-logo { display: flex; align-items: center; gap: 8px; font-weight: 700; color: var(--text2); }
+.footer-flow { font-family: var(--mono); font-size: 11px; color: var(--text3); }
+.footer-flow span { color: var(--red); }
+
+/* ── DIVIDER ── */
+.divider { height: 1px; background: var(--border); margin: 32px 0 0; }
+
+/* ── SCROLLSPY ── */
+.nav-item.spy-active { color: #fff; background: var(--red-dim); border-left-color: var(--red); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .app-layout { grid-template-columns: 1fr; }
+  .sidebar { display: none; }
+  .hero { padding: 32px 24px; }
+  .section { padding: 32px 24px 0; }
+  .hero h1 { font-size: 28px; }
+  .cards-grid.cols2, .cards-grid.cols3 { grid-template-columns: 1fr; }
+  .dir-cols { grid-template-columns: repeat(2,1fr); }
+  .signals-grid { grid-template-columns: 1fr; }
+  .forms-grid { grid-template-columns: 1fr; }
+  .checklist-grid { grid-template-columns: 1fr; }
+  .ssr-grid { grid-template-columns: 1fr; }
+  .vs-row { grid-template-columns: 1fr; }
+}
 </style>
 </head>
 <body>
+<div class="app-layout">
 
-<div class="hero">
-  <div class="hero-badge">🅰️ Guía Práctica</div>
-  <h1>Angular<br><span>De cero a producción</span></h1>
-  <p>Glosario completo + infografías visuales para dominar Angular moderno — Signals, Standalone Components, nueva sintaxis de control de flujo, SSR y las mejores prácticas de la industria.</p>
-  <div class="hero-tags">
-    <span class="tag">Components</span><span class="tag">Signals</span><span class="tag">Directives</span>
-    <span class="tag">Services / DI</span><span class="tag">Routing</span><span class="tag">Forms</span>
-    <span class="tag">HttpClient</span><span class="tag">RxJS</span><span class="tag">SSR</span><span class="tag">@defer</span>
+<!-- TOPBAR -->
+<header class="topbar">
+  <a class="topbar-logo" href="#">
+    <div class="logo-badge">A</div>
+    Angular 21
+  </a>
+  <span class="topbar-sub">Guía Definitiva · v21.2.5</span>
+  <div class="topbar-badges">
+    <span class="tbadge new">Signal Forms</span>
+    <span class="tbadge new">Zoneless</span>
+    <span class="tbadge new">Angular Aria</span>
+    <span class="tbadge">httpResource()</span>
+    <span class="tbadge">linkedSignal()</span>
   </div>
-</div>
+</header>
 
-<nav class="nav">
-  <a href="#arquitectura">🏗️ Arquitectura</a>
-  <a href="#glosario">📖 Glosario</a>
-  <a href="#signals">⚡ Signals</a>
-  <a href="#templates">🖼️ Templates</a>
-  <a href="#directivas">🏷️ Directivas</a>
-  <a href="#routing">🧭 Routing</a>
-  <a href="#forms">📝 Forms</a>
-  <a href="#http">🌐 HTTP</a>
-  <a href="#rxjs">🔄 RxJS</a>
-  <a href="#lifecycle">🔁 Lifecycle</a>
-  <a href="#estructura">📁 Estructura</a>
-  <a href="#librerias">🛠️ Ecosistema</a>
-  <a href="#comparativa">⚖️ Comparativa</a>
+<!-- SIDEBAR -->
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-section">Core</div>
+  <a class="nav-item" href="#arquitectura"><span class="icon">🏗️</span>Arquitectura</a>
+  <a class="nav-item" href="#glosario"><span class="icon">📖</span>Glosario</a>
+  <a class="nav-item" href="#signals"><span class="icon">⚡</span>Signals</a>
+  <a class="nav-item" href="#nuevas-apis"><span class="icon">🆕</span>Nuevas APIs v21<span class="nav-new">NEW</span></a>
+  <a class="nav-item" href="#templates"><span class="icon">🖼️</span>Templates</a>
+  <a class="nav-item" href="#directivas"><span class="icon">🏷️</span>Directivas</a>
+  <a class="nav-item" href="#routing"><span class="icon">🧭</span>Routing</a>
+  <a class="nav-item" href="#forms"><span class="icon">📝</span>Formularios</a>
+  <a class="nav-item" href="#http"><span class="icon">🌐</span>HttpClient</a>
+  <a class="nav-item" href="#rxjs"><span class="icon">🔄</span>RxJS</a>
+  <div class="sidebar-section">Avanzado</div>
+  <a class="nav-item" href="#lifecycle"><span class="icon">🔁</span>Lifecycle</a>
+  <a class="nav-item" href="#ssr"><span class="icon">🌍</span>SSR & Hydration</a>
+  <a class="nav-item" href="#cd"><span class="icon">⚙️</span>Change Detection</a>
+  <a class="nav-item" href="#di"><span class="icon">💉</span>DI Avanzado</a>
+  <div class="sidebar-section">Referencia</div>
+  <a class="nav-item" href="#estructura"><span class="icon">📁</span>Estructura</a>
+  <a class="nav-item" href="#performance"><span class="icon">🚀</span>Performance</a>
+  <a class="nav-item" href="#librerias"><span class="icon">🛠️</span>Ecosistema</a>
+  <a class="nav-item" href="#comparativa"><span class="icon">⚖️</span>Comparativas VS</a>
 </nav>
 
-<!-- ARQUITECTURA -->
-<section id="arquitectura">
-<div class="container">
-  <div class="section-header"><div class="section-icon">🏗️</div><div><h2>Arquitectura de Angular</h2><p>Cómo están organizadas las piezas y cómo encajan entre sí</p></div></div>
-  <div class="infograph">
-    <div class="infograph-title">🔄 Flujo de una aplicación <span>Angular</span></div>
-    <div class="arch-flow">
-      <div class="arch-layer"><div class="layer-icon">🌐</div><div class="layer-name">Browser</div><div class="layer-ann">index.html</div><div class="layer-desc">Punto de entrada</div></div>
-      <div class="arch-arrow">→</div>
-      <div class="arch-layer"><div class="layer-icon">🚀</div><div class="layer-name">Bootstrap</div><div class="layer-ann">main.ts</div><div class="layer-desc">Arranca la app</div></div>
-      <div class="arch-arrow">→</div>
-      <div class="arch-layer"><div class="layer-icon">🅰️</div><div class="layer-name">AppComponent</div><div class="layer-ann">Root Component</div><div class="layer-desc">Componente raíz</div></div>
-      <div class="arch-arrow">→</div>
-      <div class="arch-layer"><div class="layer-icon">🧭</div><div class="layer-name">Router</div><div class="layer-ann">router-outlet</div><div class="layer-desc">Decide qué vista</div></div>
-      <div class="arch-arrow">→</div>
-      <div class="arch-layer"><div class="layer-icon">🧩</div><div class="layer-name">Components</div><div class="layer-ann">@Component</div><div class="layer-desc">UI + lógica</div></div>
-      <div class="arch-arrow">→</div>
-      <div class="arch-layer"><div class="layer-icon">⚙️</div><div class="layer-name">Services</div><div class="layer-ann">@Injectable</div><div class="layer-desc">Lógica compartida</div></div>
-      <div class="arch-arrow">→</div>
-      <div class="arch-layer"><div class="layer-icon">🗄️</div><div class="layer-name">API / Backend</div><div class="layer-ann">HttpClient</div><div class="layer-desc">Datos remotos</div></div>
-    </div>
+<!-- MAIN -->
+<main class="main" id="main">
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">⬡ Guía Definitiva</div>
+  <h1>Angular <span>De cero</span><br>a producción</h1>
+  <p class="hero-desc">Glosario completo + infografías + código real para dominar Angular 21 moderno — Signals, Zoneless, Signal Forms, httpResource(), Angular Aria y todas las mejores prácticas de la industria.</p>
+  <div class="hero-tags">
+    <span class="hero-tag hot">Signal Forms ✨ NEW</span>
+    <span class="hero-tag hot">Zoneless Default ✨</span>
+    <span class="hero-tag hot">Angular Aria ✨</span>
+    <span class="hero-tag">httpResource()</span>
+    <span class="hero-tag">linkedSignal()</span>
+    <span class="hero-tag">Vitest Default</span>
+    <span class="hero-tag">@defer</span>
+    <span class="hero-tag">Standalone</span>
+    <span class="hero-tag">OnPush + Signals</span>
+    <span class="hero-tag">SSR + Hydration</span>
+    <span class="hero-tag">NgRx SignalStore</span>
+    <span class="hero-tag">MCP Server AI</span>
   </div>
-  <div class="infograph">
-    <div class="infograph-title">🧱 Los bloques fundamentales de <span>Angular</span></div>
-    <div class="pillars-grid">
-      <div class="pillar-card"><div class="pillar-icon">🧩</div><div class="pillar-name">Components</div><div class="pillar-desc">Bloque básico de UI. Combina template HTML, lógica TypeScript y estilos CSS encapsulados.</div></div>
-      <div class="pillar-card"><div class="pillar-icon">⚙️</div><div class="pillar-name">Services</div><div class="pillar-desc">Lógica reutilizable inyectable. Peticiones HTTP, estado compartido, lógica de negocio.</div></div>
-      <div class="pillar-card"><div class="pillar-icon">🏷️</div><div class="pillar-name">Directives</div><div class="pillar-desc">Modifican el comportamiento del DOM. Estructurales (@if, @for) y de atributo.</div></div>
-      <div class="pillar-card"><div class="pillar-icon">🔩</div><div class="pillar-name">Pipes</div><div class="pillar-desc">Transforman datos en el template: fechas, moneda, mayúsculas, filtros custom.</div></div>
-      <div class="pillar-card"><div class="pillar-icon">🧭</div><div class="pillar-name">Router</div><div class="pillar-desc">Navegación SPA. Rutas, guardas, lazy loading, parámetros y rutas hijas.</div></div>
-      <div class="pillar-card"><div class="pillar-icon">⚡</div><div class="pillar-name">Signals</div><div class="pillar-desc">Sistema reactivo moderno (Angular 16+). Estado local sin RxJS para casos simples.</div></div>
-      <div class="pillar-card"><div class="pillar-icon">📝</div><div class="pillar-name">Forms</div><div class="pillar-desc">Template-driven y Reactive Forms. Validación, control de estado y errores.</div></div>
-      <div class="pillar-card"><div class="pillar-icon">💉</div><div class="pillar-name">DI (Inyección)</div><div class="pillar-desc">Sistema de Dependency Injection jerárquico. Desacopla componentes de sus dependencias.</div></div>
-    </div>
+  <div class="hero-stats">
+    <div class="hstat"><div class="hstat-n">25+</div><div class="hstat-l">Conceptos</div></div>
+    <div class="hstat"><div class="hstat-n">10</div><div class="hstat-l">VS</div></div>
+    <div class="hstat"><div class="hstat-n">8</div><div class="hstat-l">Infografías</div></div>
+    <div class="hstat"><div class="hstat-n">v21</div><div class="hstat-l">Angular</div></div>
   </div>
 </div>
+
+<!-- ═══════════════════════ ARQUITECTURA ═══════════════════════ -->
+<section class="section" id="arquitectura">
+  <div class="section-header">
+    <div class="section-icon">🏗️</div>
+    <div><h2>Arquitectura de Angular</h2><p>Cómo están organizadas las piezas y cómo encajan entre sí</p></div>
+  </div>
+
+  <div class="flow-diagram">
+    <div class="flow-node"><div class="fn-icon">🌐</div><div class="fn-title">Browser</div><div class="fn-sub">index.html</div></div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-node"><div class="fn-icon">🚀</div><div class="fn-title">Bootstrap</div><div class="fn-sub">main.ts</div></div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-node"><div class="fn-icon">🅰️</div><div class="fn-title">AppComponent</div><div class="fn-sub">Root</div></div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-node"><div class="fn-icon">🧭</div><div class="fn-title">Router</div><div class="fn-sub">router-outlet</div></div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-node"><div class="fn-icon">🧩</div><div class="fn-title">Components</div><div class="fn-sub">@Component</div></div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-node"><div class="fn-icon">⚙️</div><div class="fn-title">Services</div><div class="fn-sub">@Injectable</div></div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-node"><div class="fn-icon">🗄️</div><div class="fn-title">API/Backend</div><div class="fn-sub">HttpClient</div></div>
+  </div>
+
+  <div class="blocks-grid">
+    <div class="block-item"><div class="bi-icon">🧩</div><div class="bi-title">Components</div><div class="bi-desc">UI + lógica. Template HTML, TypeScript y CSS encapsulados.</div></div>
+    <div class="block-item"><div class="bi-icon">⚙️</div><div class="bi-title">Services</div><div class="bi-desc">Lógica reutilizable inyectable. HTTP, estado, negocio.</div></div>
+    <div class="block-item"><div class="bi-icon">🏷️</div><div class="bi-title">Directives</div><div class="bi-desc">Modifican el DOM. @if, @for, @switch y atributo.</div></div>
+    <div class="block-item"><div class="bi-icon">🔩</div><div class="bi-title">Pipes</div><div class="bi-desc">Transforman datos en template: fechas, moneda, filtros.</div></div>
+    <div class="block-item"><div class="bi-icon">🧭</div><div class="bi-title">Router</div><div class="bi-desc">Navegación SPA. Rutas, guards, lazy loading.</div></div>
+    <div class="block-item"><div class="bi-icon">⚡</div><div class="bi-title">Signals</div><div class="bi-desc">Reactividad moderna. Estado sin Zone.js. Base de Angular 21.</div></div>
+    <div class="block-item"><div class="bi-icon">📝</div><div class="bi-title">Forms</div><div class="bi-desc">Template-driven, Reactive Forms y nuevo Signal Forms.</div></div>
+    <div class="block-item"><div class="bi-icon">💉</div><div class="bi-title">DI</div><div class="bi-desc">Dependency Injection jerárquico con inject().</div></div>
+  </div>
 </section>
+<div class="divider"></div>
 
-<!-- GLOSARIO -->
-<section id="glosario">
-<div class="container">
-  <div class="section-header"><div class="section-icon">📖</div><div><h2>Glosario de Conceptos Clave</h2><p>Los decoradores, conceptos y patrones más usados en Angular moderno</p></div></div>
-  <div class="glossary-grid">
+<!-- ═══════════════════════ GLOSARIO ═══════════════════════ -->
+<section class="section" id="glosario">
+  <div class="section-header">
+    <div class="section-icon">📖</div>
+    <div><h2>Glosario de Conceptos Clave</h2><p>Los decoradores, conceptos y patrones más usados en Angular moderno</p></div>
+  </div>
 
-    <div class="term-card">
-      <div class="term-header"><span class="term-name">@Component</span><span class="term-category">Core</span></div>
-      <div class="term-def">Decorador que convierte una clase TypeScript en un componente Angular. Define su selector HTML, template y estilos. Desde Angular 17, <strong style="color:var(--text)">standalone: true</strong> es el valor por defecto — ya no necesitas NgModule.</div>
-      <div class="term-use">💡 Cada componente = un archivo .ts + .html + .css. El selector es el nombre del tag HTML.</div>
-      <pre><span class="dc">@Component</span>({
-  selector: <span class="st">'app-usuario'</span>,
-  standalone: <span class="kw">true</span>,
-  imports: [NgOptimizedImage, DatePipe],
-  template: <span class="st">`
+  <div class="cards-grid">
+    <!-- @Component -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon ci-red">@C</div>
+        <div><div class="card-title">@Component</div><div class="card-subtitle">Decorador de componente</div></div>
+        <span class="card-tag tag-core">Core</span>
+      </div>
+      <div class="card-body">
+        <div class="card-desc">Convierte una clase TypeScript en un componente Angular. Desde Angular 17 <code>standalone: true</code> es el valor por defecto.</div>
+        <div class="card-tip"><span class="card-tip-icon">💡</span>Usa siempre <code>ChangeDetectionStrategy.OnPush</code> y Signals para máximo rendimiento.</div>
+        <div class="code-wrap"><div class="code-label">Componente moderno <span class="code-lang">TS</span></div><pre><span class="dec">@Component</span>({
+  <span class="fn">selector</span>: <span class="str">'app-usuario'</span>,
+  <span class="fn">standalone</span>: <span class="kw">true</span>,
+  <span class="fn">imports</span>: [NgOptimizedImage, DatePipe],
+  <span class="fn">changeDetection</span>: ChangeDetectionStrategy.OnPush,
+  <span class="fn">template</span>: <span class="str">`
     &lt;h2&gt;{{ nombre() }}&lt;/h2&gt;
     &lt;p&gt;{{ creado | date:'dd/MM/yyyy' }}&lt;/p&gt;
-  `</span>,
-  styleUrl: <span class="st">'./usuario.component.css'</span>,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  `</span>
 })
-<span class="kw">export class</span> <span class="cl">UsuarioComponent</span> {
-  nombre = <span class="fn">signal</span>(<span class="st">'Ana García'</span>);
-  creado = <span class="kw">new</span> <span class="cl">Date</span>();
-}</pre>
+<span class="kw">export class</span> <span class="tp">UsuarioComponent</span> {
+  nombre = <span class="fn">signal</span>(<span class="str">'Ana García'</span>);
+  creado = <span class="kw">new</span> <span class="tp">Date</span>();
+}</pre></div>
+      </div>
     </div>
 
-    <div class="term-card">
-      <div class="term-header"><span class="term-name">@Injectable / Service</span><span class="term-category">DI</span></div>
-      <div class="term-def">Marca una clase como inyectable por el sistema DI. Con <code style="color:var(--ng)">providedIn: 'root'</code> crea una única instancia global (singleton). Usar <code style="color:var(--ng)">inject()</code> en lugar del constructor es el patrón moderno.</div>
-      <div class="term-use">💡 Los servicios son el lugar correcto para lógica compartida, HTTP y estado global.</div>
-      <pre><span class="dc">@Injectable</span>({ providedIn: <span class="st">'root'</span> })
-<span class="kw">export class</span> <span class="cl">UsuarioService</span> {
-  <span class="kw">private</span> http = <span class="fn">inject</span>(<span class="cl">HttpClient</span>);
-  <span class="kw">private</span> url  = <span class="st">'/api/usuarios'</span>;
+    <!-- @Injectable -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon ci-purple">@I</div>
+        <div><div class="card-title">@Injectable / Service</div><div class="card-subtitle">Lógica reutilizable</div></div>
+        <span class="card-tag tag-di">DI</span>
+      </div>
+      <div class="card-body">
+        <div class="card-desc">Marca una clase como inyectable. Con <code>providedIn: 'root'</code> crea un singleton global. Usa <code>inject()</code> en vez del constructor.</div>
+        <div class="card-tip"><span class="card-tip-icon">💡</span>Los servicios son el lugar correcto para lógica compartida, HTTP y estado global.</div>
+        <div class="code-wrap"><div class="code-label">Service moderno <span class="code-lang">TS</span></div><pre><span class="dec">@Injectable</span>({ <span class="fn">providedIn</span>: <span class="str">'root'</span> })
+<span class="kw">export class</span> <span class="tp">UsuarioService</span> {
+  <span class="kw">private</span> http = <span class="fn">inject</span>(<span class="tp">HttpClient</span>);
+  <span class="kw">private</span> url  = <span class="str">'/api/usuarios'</span>;
 
-  <span class="fn">getAll</span>() {
-    <span class="kw">return</span> <span class="kw">this</span>.http.<span class="fn">get</span>&lt;<span class="cl">Usuario</span>[]&gt;(<span class="kw">this</span>.url);
+  getAll() {
+    <span class="kw">return this</span>.http.<span class="fn">get</span>&lt;<span class="tp">Usuario</span>[]&gt;(<span class="kw">this</span>.url);
   }
-  <span class="fn">getById</span>(id: <span class="kw">number</span>) {
-    <span class="kw">return</span> <span class="kw">this</span>.http.<span class="fn">get</span>&lt;<span class="cl">Usuario</span>&gt;(<span class="st">`${this.url}/${id}`</span>);
-  }
-}</pre>
+}</pre></div>
+      </div>
     </div>
 
-    <div class="term-card">
-      <div class="term-header"><span class="term-name">@Input / @Output</span><span class="term-category">Comunicación</span></div>
-      <div class="term-def"><code style="color:var(--ng)">@Input()</code> recibe datos del padre. <code style="color:var(--ng)">@Output()</code> emite eventos hacia el padre con EventEmitter. En Angular 17+ existen las funciones <code style="color:var(--ng)">input()</code> y <code style="color:var(--ng)">output()</code> basadas en Signals.</div>
-      <div class="term-use">💡 Regla: los datos bajan con @Input, los eventos suben con @Output. El flujo siempre hacia arriba.</div>
-      <pre><span class="cm">// Forma moderna con Signal Inputs (Angular 17+)</span>
-<span class="dc">@Component</span>({ selector: <span class="st">'app-card'</span>, standalone: <span class="kw">true</span>, ... })
-<span class="kw">export class</span> <span class="cl">CardComponent</span> {
-  <span class="cm">// input() retorna un Signal de solo lectura</span>
-  titulo   = <span class="fn">input</span>.required&lt;<span class="kw">string</span>&gt;();
-  subtitulo = <span class="fn">input</span>(<span class="st">'Sin subtítulo'</span>);
+    <!-- @Input / @Output -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon ci-blue">IO</div>
+        <div><div class="card-title">@Input / @Output</div><div class="card-subtitle">Comunicación padre-hijo</div></div>
+        <span class="card-tag tag-core">Core</span>
+      </div>
+      <div class="card-body">
+        <div class="card-desc"><code>@Input()</code> recibe datos del padre. <code>@Output()</code> emite eventos. En Angular 17+ existen <code>input()</code> y <code>output()</code> basados en Signals.</div>
+        <div class="card-tip"><span class="card-tip-icon">💡</span>Regla: los datos bajan con @Input, los eventos suben con @Output.</div>
+        <div class="code-wrap"><div class="code-label">Signal Inputs/Outputs (v17+) <span class="code-lang">TS</span></div><pre><span class="kw">export class</span> <span class="tp">CardComponent</span> {
+  titulo    = <span class="fn">input</span>.<span class="fn">required</span>&lt;<span class="tp">string</span>&gt;();
+  subtitulo = <span class="fn">input</span>(<span class="str">'Sin subtítulo'</span>);
+  seleccionado = <span class="fn">output</span>&lt;<span class="tp">number</span>&gt;();
 
-  <span class="cm">// output() — sin EventEmitter</span>
-  seleccionado = <span class="fn">output</span>&lt;<span class="kw">number</span>&gt;();
-
-  <span class="fn">onSeleccionar</span>(id: <span class="kw">number</span>) {
+  <span class="fn">onSelect</span>(id: <span class="tp">number</span>) {
     <span class="kw">this</span>.seleccionado.<span class="fn">emit</span>(id);
   }
-}
-<span class="cm">&lt;!-- &lt;app-card [titulo]="'Mi card'" (seleccionado)="fn($event)" /&gt; --&gt;</span></pre>
+}</pre></div>
+      </div>
     </div>
 
-    <div class="term-card">
-      <div class="term-header"><span class="term-name">Standalone Components</span><span class="term-category">Angular 17+</span></div>
-      <div class="term-def">Desde Angular 17, los componentes son standalone por defecto — no necesitan NgModule. Importan sus dependencias directamente. El arranque se hace con <code style="color:var(--ng)">bootstrapApplication()</code> y providers funcionales.</div>
-      <div class="term-use">💡 Todo proyecto nuevo usa standalone. NgModule existe pero es el modelo legado.</div>
-      <pre><span class="cm">// main.ts — arranque moderno</span>
-<span class="fn">bootstrapApplication</span>(<span class="cl">AppComponent</span>, {
+    <!-- Standalone -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon ci-green">SA</div>
+        <div><div class="card-title">Standalone Components</div><div class="card-subtitle">Sin NgModule</div></div>
+        <span class="card-tag tag-new">v17+</span>
+      </div>
+      <div class="card-body">
+        <div class="card-desc">Default desde Angular 17. Los componentes importan sus dependencias directamente. El arranque usa <code>bootstrapApplication()</code> con providers funcionales.</div>
+        <div class="card-tip"><span class="card-tip-icon">💡</span>NgModule existe pero es el modelo legado. Todo proyecto nuevo usa standalone.</div>
+        <div class="code-wrap"><div class="code-label">Bootstrap moderno <span class="code-lang">TS</span></div><pre><span class="fn">bootstrapApplication</span>(AppComponent, {
   providers: [
-    <span class="fn">provideRouter</span>(routes, withComponentInputBinding()),
-    <span class="fn">provideHttpClient</span>(<span class="fn">withInterceptors</span>([authInterceptor])),
-    <span class="fn">provideAnimationsAsync</span>(),
-    <span class="fn">provideClientHydration</span>(),  <span class="cm">// SSR</span>
+    <span class="fn">provideRouter</span>(routes,
+      <span class="fn">withComponentInputBinding</span>()),
+    <span class="fn">provideHttpClient</span>(
+      <span class="fn">withInterceptors</span>([authInterceptor])),
+    <span class="fn">provideClientHydration</span>(),
   ]
-});</pre>
+});</pre></div>
+      </div>
     </div>
 
-    <div class="term-card">
-      <div class="term-header"><span class="term-name">inject()</span><span class="term-category">DI Moderno</span></div>
-      <div class="term-def">Función de inyección de dependencias (Angular 14+). Reemplaza al constructor con parámetros. Solo puede usarse en contexto de inyección: al definir campos de clase, en el constructor, o en factory functions.</div>
-      <div class="term-use">💡 <code style="color:var(--ng)">inject()</code> es la forma preferida. Es más limpio, composable y permite crear funciones reutilizables.</div>
-      <pre><span class="kw">export class</span> <span class="cl">ProductoComponent</span> {
-  <span class="cm">// Inyección directa en campos de clase</span>
-  <span class="kw">private</span> svc      = <span class="fn">inject</span>(<span class="cl">ProductoService</span>);
-  <span class="kw">private</span> router   = <span class="fn">inject</span>(<span class="cl">Router</span>);
-  <span class="kw">private</span> route    = <span class="fn">inject</span>(<span class="cl">ActivatedRoute</span>);
-  <span class="kw">private</span> destroy  = <span class="fn">inject</span>(<span class="cl">DestroyRef</span>);
-}
-
-<span class="cm">// Función reutilizable con inject()</span>
-<span class="kw">function</span> <span class="fn">usePaginacion</span>(paginaTam = <span class="nm">10</span>) {
-  <span class="kw">const</span> router = <span class="fn">inject</span>(<span class="cl">Router</span>);
-  <span class="kw">const</span> pagina = <span class="fn">signal</span>(<span class="nm">1</span>);
-  <span class="kw">return</span> { pagina, <span class="fn">siguiente</span>: () => pagina.<span class="fn">update</span>(p => p + <span class="nm">1</span>) };
-}</pre>
-    </div>
-
-    <div class="term-card">
-      <div class="term-header"><span class="term-name">Pipe</span><span class="term-category">Template</span></div>
-      <div class="term-def">Transforma valores en el template usando el operador <code style="color:var(--ng)">|</code>. Hay pipes integrados (DatePipe, CurrencyPipe, AsyncPipe, JsonPipe) y se pueden crear personalizados. Las pipes <strong style="color:var(--text)">puras</strong> solo recalculan cuando cambia la referencia del input.</div>
-      <div class="term-use">💡 Usa <code style="color:var(--ng)">async</code> pipe para suscribirte a Observables — se desuscribe automáticamente al destruir el componente.</div>
-      <pre><span class="cm">&lt;!-- Pipes built-in --&gt;</span>
-{{ fecha | date:<span class="st">'dd/MM/yyyy HH:mm'</span> }}
-{{ precio | currency:<span class="st">'COP'</span>:<span class="st">'symbol'</span>:<span class="st">'1.0-0'</span> }}
-{{ texto | uppercase | slice:0:50 }}
-{{ objeto | json }}
-{{ numero | number:<span class="st">'1.2-2'</span> }}
-
-<span class="cm">&lt;!-- async pipe: maneja suscripción --&gt;</span>
-@if (usuarios$ | async; as lista) {
-  @for (u of lista; track u.id) {
-    &lt;app-card [titulo]="u.nombre" /&gt;
-  }
-}
-
-<span class="cm">// Pipe personalizada</span>
-<span class="dc">@Pipe</span>({ name: <span class="st">'truncar'</span>, standalone: <span class="kw">true</span> })
-<span class="kw">export class</span> <span class="cl">TruncarPipe</span> <span class="kw">implements</span> <span class="cl">PipeTransform</span> {
-  <span class="fn">transform</span>(val: <span class="kw">string</span>, len = <span class="nm">50</span>): <span class="kw">string</span> {
-    <span class="kw">return</span> val?.length > len ? val.<span class="fn">slice</span>(<span class="nm">0</span>, len) + <span class="st">'…'</span> : val;
-  }
-}</pre>
-    </div>
-
-    <div class="term-card">
-      <div class="term-header"><span class="term-name">@defer (Deferrable Views)</span><span class="term-category">Angular 17+</span></div>
-      <div class="term-def">Carga componentes de forma diferida directamente en el template. Soporta triggers: <code style="color:var(--ng)">on viewport</code>, <code style="color:var(--ng)">on idle</code>, <code style="color:var(--ng)">on interaction</code>, <code style="color:var(--ng)">when condicion</code>. Mejora el LCP automáticamente.</div>
-      <div class="term-use">💡 La forma más simple de lazy loading a nivel de componente. Sin código JavaScript adicional.</div>
-      <pre><span class="cm">&lt;!-- Carga cuando el elemento entra en pantalla --&gt;</span>
-@defer (on viewport) {
-  &lt;app-comentarios /&gt;
-} @loading (minimum 200ms) {
-  &lt;app-skeleton /&gt;
-} @error {
-  &lt;p&gt;Error al cargar comentarios&lt;/p&gt;
-} @placeholder {
-  &lt;div class="placeholder"&gt;Comentarios aquí&lt;/div&gt;
-}
-
-<span class="cm">&lt;!-- Carga al interactuar con un elemento --&gt;</span>
-&lt;button #btn&gt;Ver mapa&lt;/button&gt;
-@defer (on interaction(btn)) {
-  &lt;app-mapa-interactivo /&gt;
-}</pre>
-    </div>
-
-    <div class="term-card">
-      <div class="term-header"><span class="term-name">Guards &amp; Resolvers</span><span class="term-category">Routing</span></div>
-      <div class="term-def">Los <strong style="color:var(--text)">Guards</strong> protegen rutas (¿puede el usuario entrar?). Los <strong style="color:var(--text)">Resolvers</strong> precargan datos antes de activar la ruta. En Angular 15+ son funciones simples, no clases con implementación de interfaz.</div>
-      <div class="term-use">💡 canActivate, canDeactivate, canMatch y canLoad son los guards principales. Usa funciones, no clases.</div>
-      <pre><span class="cm">// Guard moderno (función pura)</span>
-<span class="kw">export const</span> authGuard: <span class="cl">CanActivateFn</span> = () => {
-  <span class="kw">const</span> auth   = <span class="fn">inject</span>(<span class="cl">AuthService</span>);
-  <span class="kw">const</span> router = <span class="fn">inject</span>(<span class="cl">Router</span>);
-  <span class="kw">return</span> auth.isLoggedIn()
+    <!-- inject() -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon ci-purple">DI</div>
+        <div><div class="card-title">inject()</div><div class="card-subtitle">DI funcional moderno</div></div>
+        <span class="card-tag tag-di">v14+</span>
+      </div>
+      <div class="card-body">
+        <div class="card-desc">Reemplaza al constructor con parámetros. Solo puede usarse en contexto de inyección. Permite crear funciones reutilizables con DI.</div>
+        <div class="card-tip"><span class="card-tip-icon">💡</span><code>inject()</code> es la forma preferida. Más limpio, composable y funciona en guards y helpers.</div>
+        <div class="code-wrap"><div class="code-label">Guard funcional <span class="code-lang">TS</span></div><pre><span class="kw">export const</span> authGuard: <span class="tp">CanActivateFn</span> = () => {
+  <span class="kw">const</span> auth   = <span class="fn">inject</span>(<span class="tp">AuthService</span>);
+  <span class="kw">const</span> router = <span class="fn">inject</span>(<span class="tp">Router</span>);
+  <span class="kw">return</span> auth.<span class="fn">isLoggedIn</span>()
     ? <span class="kw">true</span>
-    : router.<span class="fn">createUrlTree</span>([<span class="st">'/login'</span>]);
-};
-
-<span class="cm">// Resolver moderno</span>
-<span class="kw">export const</span> usuarioResolver: <span class="cl">ResolveFn</span>&lt;<span class="cl">Usuario</span>&gt; = (route) => {
-  <span class="kw">return</span> <span class="fn">inject</span>(<span class="cl">UsuarioService</span>).<span class="fn">getById</span>(
-    +route.paramMap.<span class="fn">get</span>(<span class="st">'id'</span>)!
-  );
-};</pre>
+    : router.<span class="fn">createUrlTree</span>([<span class="str">'/login'</span>]);
+};</pre></div>
+      </div>
     </div>
 
-    <div class="term-card">
-      <div class="term-header"><span class="term-name">ChangeDetection OnPush</span><span class="term-category">Performance</span></div>
-      <div class="term-def">Mecanismo que decide cuándo actualizar el DOM. <strong style="color:var(--text)">Default</strong> revisa toda la app ante cualquier evento. <strong style="color:var(--text)">OnPush</strong> solo revisa cuando cambia una referencia de @Input o un Signal emite. Mucho más eficiente.</div>
-      <div class="term-use">💡 Siempre usa OnPush en producción. Con Signals + OnPush, Angular actualiza solo los nodos que cambian.</div>
-      <pre><span class="dc">@Component</span>({
-  changeDetection: <span class="cl">ChangeDetectionStrategy</span>.OnPush,
-  template: <span class="st">`
-    &lt;p&gt;{{ nombre() }}&lt;/p&gt;
-    &lt;p&gt;Total: {{ total() | currency }}&lt;/p&gt;
-  `</span>
-})
-<span class="kw">export class</span> <span class="cl">OptimizadoComponent</span> {
-  nombre = <span class="fn">signal</span>(<span class="st">'Angular'</span>);
-  items  = <span class="fn">signal</span>&lt;<span class="cl">Item</span>[]&gt;([]);
-  total  = <span class="fn">computed</span>(
-    () => <span class="kw">this</span>.items().<span class="fn">reduce</span>((s, i) => s + i.precio, <span class="nm">0</span>)
-  );
-}</pre>
-    </div>
+    <!-- Pipes -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon ci-teal">|P</div>
+        <div><div class="card-title">Pipes</div><div class="card-subtitle">Transformadores de template</div></div>
+        <span class="card-tag tag-core">Core</span>
+      </div>
+      <div class="card-body">
+        <div class="card-desc">Transforman valores con el operador <code>|</code>. Las <em>pure pipes</em> solo recalculan cuando cambia la referencia. <code>async</code> gestiona subscripciones automáticamente.</div>
+        <div class="code-wrap"><div class="code-label">Pipe custom + built-ins <span class="code-lang">TS</span></div><pre><span class="cm">{{ fecha | date:'dd/MM/yyyy HH:mm' }}</span>
+<span class="cm">{{ precio | currency:'COP':'symbol':'1.0-0' }}</span>
+<span class="cm">{{ texto | uppercase | slice:0:50 }}</span>
 
-    <div class="term-card">
-      <div class="term-header"><span class="term-name">ViewChild / viewChild()</span><span class="term-category">DOM</span></div>
-      <div class="term-def">Accede a elementos del DOM o componentes hijos directamente desde la clase. <code style="color:var(--ng)">@ViewChild</code> es el decorador clásico. <code style="color:var(--ng)">viewChild()</code> (Angular 17+) retorna un Signal. Disponible solo después de <code style="color:var(--ng)">ngAfterViewInit</code>.</div>
-      <div class="term-use">💡 Usa <code style="color:var(--ng)">viewChild()</code> con Signals. Es reactivo y no necesita el hook ngAfterViewInit.</div>
-      <pre><span class="dc">@Component</span>({ template: <span class="st">`&lt;input #inp /&gt;`</span> })
-<span class="kw">export class</span> <span class="cl">FormComponent</span> {
-  <span class="cm">// Forma moderna con Signal</span>
-  inputEl = <span class="fn">viewChild</span>&lt;<span class="cl">ElementRef</span>&gt;(<span class="st">'inp'</span>);
-
-  <span class="cm">// Acceso reactivo al elemento nativo</span>
-  <span class="fn">enfocar</span>() {
-    <span class="kw">this</span>.inputEl()?.nativeElement.<span class="fn">focus</span>();
+<span class="dec">@Pipe</span>({ <span class="fn">name</span>: <span class="str">'truncar'</span>, <span class="fn">standalone</span>: <span class="kw">true</span> })
+<span class="kw">export class</span> <span class="tp">TruncarPipe</span> {
+  transform(val: <span class="tp">string</span>, len = <span class="num">50</span>): <span class="tp">string</span> {
+    <span class="kw">return</span> val?.length > len
+      ? val.<span class="fn">slice</span>(<span class="num">0</span>, len) + <span class="str">'…'</span> : val;
   }
-
-  <span class="cm">// Acceder a componente hijo</span>
-  modal = <span class="fn">viewChild</span>(<span class="cl">ModalComponent</span>);
-  <span class="fn">abrirModal</span>() { <span class="kw">this</span>.modal()!.<span class="fn">open</span>(); }
-}</pre>
+}</pre></div>
+      </div>
     </div>
 
-    <div class="term-card">
-      <div class="term-header"><span class="term-name">ng-content (Proyección)</span><span class="term-category">Composición</span></div>
-      <div class="term-def">Permite proyectar contenido del padre al interior del componente hijo. Con <code style="color:var(--ng)">select</code> puedes proyectar partes específicas (named slots). Es el mecanismo de composición de Angular.</div>
-      <div class="term-use">💡 Úsalo para crear componentes contenedores reutilizables como cards, dialogs y layouts.</div>
-      <pre><span class="cm">// card.component.ts</span>
-<span class="dc">@Component</span>({ template: <span class="st">`
-  &lt;div class="card"&gt;
-    &lt;div class="card-header"&gt;
-      &lt;ng-content select="[cardHeader]" /&gt;
-    &lt;/div&gt;
-    &lt;div class="card-body"&gt;
-      &lt;ng-content /&gt;
-    &lt;/div&gt;
-    &lt;div class="card-footer"&gt;
-      &lt;ng-content select="[cardFooter]" /&gt;
-    &lt;/div&gt;
+    <!-- @defer -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon ci-orange">⏳</div>
+        <div><div class="card-title">@defer</div><div class="card-subtitle">Carga diferida declarativa</div></div>
+        <span class="card-tag tag-perf">v17+</span>
+      </div>
+      <div class="card-body">
+        <div class="card-desc">Carga componentes lazy directamente en el template con triggers: <code>on viewport</code>, <code>on idle</code>, <code>on interaction</code>, <code>when condición</code>.</div>
+        <div class="card-tip"><span class="card-tip-icon">💡</span>La forma más simple de lazy loading. Sin código JS adicional. Mejora LCP automáticamente.</div>
+        <div class="code-wrap"><div class="code-label">Todos los triggers <span class="code-lang">HTML</span></div><pre>@<span class="fn">defer</span> (<span class="fn">on viewport</span>) {
+  &lt;app-comentarios /&gt;
+} @<span class="fn">loading</span> (minimum 200ms) {
+  &lt;app-skeleton /&gt;
+} @<span class="fn">error</span>       { &lt;p&gt;Error al cargar&lt;/p&gt; }
+@<span class="fn">placeholder</span> { &lt;div&gt;Aquí irán los comentarios&lt;/div&gt; }
+
+@<span class="fn">defer</span> (<span class="fn">on idle</span>)      { &lt;footer-heavy /&gt; }
+@<span class="fn">defer</span> (<span class="fn">on interaction</span>(btn)) { &lt;app-modal /&gt; }
+@<span class="fn">defer</span> (<span class="fn">when</span> <span class="fn">isLoggedIn</span>()) { &lt;dashboard /&gt; }</pre></div>
+      </div>
+    </div>
+
+    <!-- Guards & Resolvers -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon ci-yellow">GR</div>
+        <div><div class="card-title">Guards & Resolvers</div><div class="card-subtitle">Protección de rutas</div></div>
+        <span class="card-tag tag-core">Routing</span>
+      </div>
+      <div class="card-body">
+        <div class="card-desc">Guards protegen rutas. Resolvers precargan datos. En Angular 15+ son funciones simples, no clases.</div>
+        <div class="code-wrap"><div class="code-label">Resolver moderno <span class="code-lang">TS</span></div><pre><span class="kw">export const</span> usuarioResolver: <span class="tp">ResolveFn</span>&lt;<span class="tp">Usuario</span>&gt; =
+  (route) => <span class="fn">inject</span>(<span class="tp">UsuarioService</span>)
+    .<span class="fn">getById</span>(+route.paramMap.<span class="fn">get</span>(<span class="str">'id'</span>)!);
+
+<span class="cm">// En las rutas:</span>
+{
+  path: <span class="str">'detalle/:id'</span>,
+  resolve: { usuario: usuarioResolver },
+  <span class="fn">loadComponent</span>: () => <span class="fn">import</span>(<span class="str">'./detalle.component'</span>)
+}</pre></div>
+      </div>
+    </div>
+
+    <!-- OnPush -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon ci-teal">OP</div>
+        <div><div class="card-title">ChangeDetection OnPush</div><div class="card-subtitle">Performance crítica</div></div>
+        <span class="card-tag tag-perf">Perf</span>
+      </div>
+      <div class="card-body">
+        <div class="card-desc"><strong>Default</strong> revisa toda la app ante cualquier evento. <strong>OnPush</strong> solo revisa cuando cambia una referencia de @Input o un Signal emite.</div>
+        <div class="card-tip"><span class="card-tip-icon">💡</span>Siempre usa OnPush. Con Signals + OnPush → Zoneless, Angular solo actualiza los nodos que cambian.</div>
+        <div class="code-wrap"><div class="code-label">Componente optimizado <span class="code-lang">TS</span></div><pre><span class="dec">@Component</span>({
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+<span class="kw">export class</span> <span class="tp">OptimizadoComponent</span> {
+  items  = <span class="fn">signal</span>&lt;<span class="tp">Item</span>[]&gt;([]);
+  total  = <span class="fn">computed</span>(() =>
+    <span class="kw">this</span>.items().<span class="fn">reduce</span>((s, i) => s + i.precio, <span class="num">0</span>)
+  );
+}</pre></div>
+      </div>
+    </div>
+
+    <!-- ViewChild -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon ci-blue">VC</div>
+        <div><div class="card-title">viewChild() / ViewChild</div><div class="card-subtitle">Acceso al DOM</div></div>
+        <span class="card-tag tag-new">v17+</span>
+      </div>
+      <div class="card-body">
+        <div class="card-desc">Accede a elementos del DOM o componentes hijos. <code>viewChild()</code> retorna un Signal (v17+). Disponible después de <code>ngAfterViewInit</code>.</div>
+        <div class="code-wrap"><div class="code-label">viewChild con Signal <span class="code-lang">TS</span></div><pre><span class="kw">export class</span> <span class="tp">FormComponent</span> {
+  inputEl = <span class="fn">viewChild</span>&lt;<span class="tp">ElementRef</span>&gt;(<span class="str">'inp'</span>);
+  modal   = <span class="fn">viewChild</span>(<span class="tp">ModalComponent</span>);
+
+  <span class="fn">enfocar</span>() {
+    <span class="kw">this</span>.<span class="fn">inputEl</span>()?.nativeElement.<span class="fn">focus</span>();
+  }
+  <span class="fn">abrir</span>() { <span class="kw">this</span>.<span class="fn">modal</span>()!.<span class="fn">open</span>(); }
+}</pre></div>
+      </div>
+    </div>
+
+    <!-- ng-content -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon ci-pink">ng</div>
+        <div><div class="card-title">ng-content</div><div class="card-subtitle">Content Projection</div></div>
+        <span class="card-tag tag-core">Core</span>
+      </div>
+      <div class="card-body">
+        <div class="card-desc">Proyecta contenido del padre al interior del componente hijo. Con <code>select</code> puedes proyectar partes específicas (named slots).</div>
+        <div class="code-wrap"><div class="code-label">Slots nombrados <span class="code-lang">HTML</span></div><pre><span class="cm">&lt;!-- card.component template --&gt;</span>
+&lt;div class=<span class="str">"card"</span>&gt;
+  &lt;div class=<span class="str">"header"</span>&gt;
+    &lt;<span class="fn">ng-content</span> select=<span class="str">"[cardHeader]"</span> /&gt;
   &lt;/div&gt;
-`</span> })
-<span class="kw">export class</span> <span class="cl">CardComponent</span> {}
-
-<span class="cm">&lt;!-- Uso --&gt;
-&lt;app-card&gt;
-  &lt;h3 cardHeader&gt;Título&lt;/h3&gt;
-  &lt;p&gt;Contenido principal&lt;/p&gt;
-  &lt;button cardFooter&gt;Aceptar&lt;/button&gt;
-&lt;/app-card&gt;</span></pre>
-    </div>
-
-    <div class="term-card">
-      <div class="term-header"><span class="term-name">NgOptimizedImage</span><span class="term-category">Performance</span></div>
-      <div class="term-def">Directiva integrada para imágenes optimizadas: lazy loading automático, tamaños correctos, prevención de CLS, marca la imagen LCP como priority. Mejora Core Web Vitals sin configuración extra.</div>
-      <div class="term-use">💡 Siempre usa <code style="color:var(--ng)">ngSrc</code> en lugar de <code style="color:var(--ng)">src</code> para imágenes en Angular. Es una mejora sin costo.</div>
-      <pre><span class="dc">@Component</span>({
-  imports: [NgOptimizedImage],
-  template: <span class="st">`
-    &lt;!-- LCP hero image --&gt;
-    &lt;img ngSrc="/assets/hero.jpg"
-         width="1200" height="600"
-         priority alt="Hero" /&gt;
-
-    &lt;!-- Imágenes lazy por defecto --&gt;
-    @for (p of productos(); track p.id) {
-      &lt;img [ngSrc]="p.imagen"
-           width="300" height="200"
-           [alt]="p.nombre" /&gt;
-    }
-  `</span>
-})</pre>
-    </div>
-
-  </div>
-</div>
-</section>
-
-<!-- SIGNALS -->
-<section id="signals">
-<div class="container">
-  <div class="section-header"><div class="section-icon">⚡</div><div><h2>Signals — Estado Reactivo Moderno</h2><p>El sistema de reactividad de Angular 16+. Más simple y eficiente que RxJS para estado local.</p></div></div>
-
-  <div class="infograph">
-    <div class="infograph-title">⚡ Las 4 primitivas de <span>Signals</span></div>
-    <div class="signal-grid">
-      <div class="signal-card">
-        <div class="signal-title">signal(valor)</div>
-        <div class="signal-desc">Estado mutable. Se lee llamándolo como función. Se actualiza con .set(), .update() o .mutate() para objetos.</div>
-        <pre><span class="kw">const</span> contador = <span class="fn">signal</span>(<span class="nm">0</span>);
-
-contador();                   <span class="cm">// leer → 0</span>
-contador.<span class="fn">set</span>(<span class="nm">5</span>);              <span class="cm">// asignar</span>
-contador.<span class="fn">update</span>(n => n + <span class="nm">1</span>); <span class="cm">// transformar</span></pre>
+  &lt;div class=<span class="str">"body"</span>&gt;&lt;<span class="fn">ng-content</span> /&gt;&lt;/div&gt;
+  &lt;div class=<span class="str">"footer"</span>&gt;
+    &lt;<span class="fn">ng-content</span> select=<span class="str">"[cardFooter]"</span> /&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</pre></div>
       </div>
-      <div class="signal-card">
-        <div class="signal-title">computed(fn)</div>
-        <div class="signal-desc">Valor derivado de otros signals. Solo recalcula cuando sus dependencias cambian. De solo lectura (asReadonly).</div>
-        <pre><span class="kw">const</span> precio = <span class="fn">signal</span>(<span class="nm">100</span>);
-<span class="kw">const</span> iva    = <span class="fn">signal</span>(<span class="nm">0.19</span>);
+    </div>
 
+    <!-- DestroyRef -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon ci-red">DR</div>
+        <div><div class="card-title">DestroyRef + takeUntilDestroyed</div><div class="card-subtitle">Cleanup moderno</div></div>
+        <span class="card-tag tag-new">v16+</span>
+      </div>
+      <div class="card-body">
+        <div class="card-desc">Alternativa a <code>ngOnDestroy</code>. <code>takeUntilDestroyed()</code> completa un Observable automáticamente al destruir el componente.</div>
+        <div class="card-tip"><span class="card-tip-icon">💡</span>Elimina el patrón Subject + ngOnDestroy en código nuevo.</div>
+        <div class="code-wrap"><div class="code-label">Sin ngOnDestroy <span class="code-lang">TS</span></div><pre><span class="kw">export class</span> <span class="tp">Moderno</span> {
+  datos$ = <span class="fn">inject</span>(<span class="tp">DataService</span>)
+    .<span class="fn">stream</span>().<span class="fn">pipe</span>(
+      <span class="fn">takeUntilDestroyed</span>() <span class="cm">// auto-cleanup</span>
+    );
+  <span class="cm">// ¡No necesita ngOnDestroy!</span>
+}</pre></div>
+      </div>
+    </div>
+
+    <!-- NgOptimizedImage -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon ci-green">IMG</div>
+        <div><div class="card-title">NgOptimizedImage</div><div class="card-subtitle">Imágenes optimizadas</div></div>
+        <span class="card-tag tag-perf">Perf</span>
+      </div>
+      <div class="card-body">
+        <div class="card-desc">Lazy loading automático, tamaños correctos, prevención de CLS, marca imagen LCP con <code>priority</code>. Mejora Core Web Vitals sin configuración extra.</div>
+        <div class="card-tip"><span class="card-tip-icon">💡</span>Usa siempre <code>ngSrc</code> en lugar de <code>src</code>. Es una mejora sin costo.</div>
+        <div class="code-wrap"><div class="code-label">Uso correcto <span class="code-lang">HTML</span></div><pre><span class="cm">&lt;!-- LCP hero image --&gt;</span>
+&lt;img ngSrc=<span class="str">"/assets/hero.jpg"</span>
+     width=<span class="str">"1200"</span> height=<span class="str">"600"</span>
+     priority alt=<span class="str">"Hero"</span> /&gt;
+
+<span class="cm">&lt;!-- Lazy por defecto --&gt;</span>
+@<span class="fn">for</span> (p <span class="kw">of</span> <span class="fn">productos</span>(); track p.id) {
+  &lt;img [ngSrc]=<span class="str">"p.imagen"</span>
+       width=<span class="str">"300"</span> height=<span class="str">"200"</span> /&gt;
+}</pre></div>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="divider"></div>
+
+<!-- ═══════════════════════ SIGNALS ═══════════════════════ -->
+<section class="section" id="signals">
+  <div class="section-header">
+    <div class="section-icon">⚡</div>
+    <div><h2>Signals — Estado Reactivo Moderno</h2><p>El sistema de reactividad de Angular 16+. Más simple y eficiente que RxJS para estado local.</p></div>
+  </div>
+
+  <div class="signals-grid">
+    <div class="signal-card">
+      <div class="signal-card-head">signal(valor)</div>
+      <div class="signal-card-desc">Estado mutable. Se lee invocándolo. Se actualiza con .set(), .update() o .mutate().</div>
+      <pre><span class="kw">const</span> contador = <span class="fn">signal</span>(<span class="num">0</span>);
+<span class="fn">contador</span>();                    <span class="cm">// leer → 0</span>
+contador.<span class="fn">set</span>(<span class="num">5</span>);              <span class="cm">// asignar</span>
+contador.<span class="fn">update</span>(n => n + <span class="num">1</span>); <span class="cm">// transformar</span></pre>
+    </div>
+    <div class="signal-card">
+      <div class="signal-card-head">computed(fn)</div>
+      <div class="signal-card-desc">Valor derivado. Solo recalcula cuando sus dependencias cambian. De solo lectura.</div>
+      <pre><span class="kw">const</span> precio = <span class="fn">signal</span>(<span class="num">100</span>);
+<span class="kw">const</span> iva    = <span class="fn">signal</span>(<span class="num">0.19</span>);
 <span class="kw">const</span> total = <span class="fn">computed</span>(
-  () => precio() * (<span class="nm">1</span> + iva())
-);
-total(); <span class="cm">// → 119 (recalcula solo si precio o iva cambian)</span></pre>
-      </div>
-      <div class="signal-card">
-        <div class="signal-title">effect(fn)</div>
-        <div class="signal-desc">Efecto secundario que corre automáticamente cuando los signals que usa cambian. Para sincronización, logging o localStorage.</div>
-        <pre><span class="kw">const</span> tema = <span class="fn">signal</span>(<span class="st">'dark'</span>);
-
+  () => <span class="fn">precio</span>() * (<span class="num">1</span> + <span class="fn">iva</span>())
+); <span class="cm">// → 119</span></pre>
+    </div>
+    <div class="signal-card">
+      <div class="signal-card-head">effect(fn)</div>
+      <div class="signal-card-desc">Side effect que corre al cambiar sus signals. Para sync, logging o localStorage.</div>
+      <pre><span class="kw">const</span> tema = <span class="fn">signal</span>(<span class="str">'dark'</span>);
 <span class="fn">effect</span>(() => {
-  <span class="cm">// Se ejecuta cada vez que 'tema' cambia</span>
-  document.body.dataset.theme = tema();
-  localStorage.<span class="fn">setItem</span>(<span class="st">'tema'</span>, tema());
+  document.body.dataset.theme = <span class="fn">tema</span>();
+  localStorage.<span class="fn">setItem</span>(<span class="str">'tema'</span>, <span class="fn">tema</span>());
 });</pre>
-      </div>
-      <div class="signal-card">
-        <div class="signal-title">toSignal(obs$)</div>
-        <div class="signal-desc">Convierte un Observable de RxJS a Signal. El puente entre el mundo reactivo. Gestiona la suscripción automáticamente.</div>
-        <pre><span class="kw">import</span> { toSignal } <span class="kw">from</span> <span class="st">'@angular/core/rxjs-interop'</span>;
+    </div>
+    <div class="signal-card">
+      <div class="signal-card-head">toSignal(obs$)</div>
+      <div class="signal-card-desc">Convierte un Observable RxJS en Signal. Gestiona la suscripción automáticamente.</div>
+      <pre><span class="kw">import</span> { toSignal } <span class="kw">from</span> <span class="str">'@angular/core/rxjs-interop'</span>;
 
-<span class="kw">export class</span> <span class="cl">ListaComponent</span> {
-  <span class="kw">private</span> svc = <span class="fn">inject</span>(<span class="cl">DataService</span>);
-
-  datos = <span class="fn">toSignal</span>(<span class="kw">this</span>.svc.<span class="fn">getAll</span>(), {
-    initialValue: []
-  });
+<span class="kw">export class</span> <span class="tp">Lista</span> {
+  datos = <span class="fn">toSignal</span>(<span class="fn">inject</span>(<span class="tp">Svc</span>).<span class="fn">getAll</span>(),
+    { initialValue: [] });
 }</pre>
-      </div>
     </div>
   </div>
 
-  <div class="infograph">
-    <div class="infograph-title">🏪 Signal Store — <span>gestión de estado</span> sin NgRx</div>
-    <pre><span class="cm">// store/carrito.store.ts</span>
-<span class="dc">@Injectable</span>({ providedIn: <span class="st">'root'</span> })
-<span class="kw">export class</span> <span class="cl">CarritoStore</span> {
-  <span class="cm">// Estado privado mutable</span>
-  <span class="kw">private</span> _items = <span class="fn">signal</span>&lt;<span class="cl">Producto</span>[]&gt;([]);
+  <div class="full-card">
+    <div class="full-card-head">🏪 Signal Store — gestión de estado sin NgRx clásico</div>
+    <div class="full-card-body">
+      <pre><span class="dec">@Injectable</span>({ <span class="fn">providedIn</span>: <span class="str">'root'</span> })
+<span class="kw">export class</span> <span class="tp">CarritoStore</span> {
+  <span class="kw">private</span> _items = <span class="fn">signal</span>&lt;<span class="tp">Producto</span>[]&gt;([]);
 
-  <span class="cm">// Estado público de solo lectura (exposición controlada)</span>
   <span class="kw">readonly</span> items    = <span class="kw">this</span>._items.<span class="fn">asReadonly</span>();
-  <span class="kw">readonly</span> total    = <span class="fn">computed</span>(() => <span class="kw">this</span>._items().<span class="fn">reduce</span>((s, p) => s + p.precio, <span class="nm">0</span>));
+  <span class="kw">readonly</span> total    = <span class="fn">computed</span>(() => <span class="kw">this</span>._items().<span class="fn">reduce</span>((s, p) => s + p.precio, <span class="num">0</span>));
   <span class="kw">readonly</span> cantidad = <span class="fn">computed</span>(() => <span class="kw">this</span>._items().length);
-  <span class="kw">readonly</span> isEmpty  = <span class="fn">computed</span>(() => <span class="kw">this</span>._items().length === <span class="nm">0</span>);
+  <span class="kw">readonly</span> isEmpty  = <span class="fn">computed</span>(() => <span class="kw">this</span>._items().length === <span class="num">0</span>);
 
-  <span class="cm">// Acciones</span>
-  <span class="fn">agregar</span>(p: <span class="cl">Producto</span>) { <span class="kw">this</span>._items.<span class="fn">update</span>(items => [...items, p]); }
-  <span class="fn">eliminar</span>(id: <span class="kw">number</span>) { <span class="kw">this</span>._items.<span class="fn">update</span>(items => items.<span class="fn">filter</span>(p => p.id !== id)); }
-  <span class="fn">vaciar</span>()             { <span class="kw">this</span>._items.<span class="fn">set</span>([]); }
-}
-
-<span class="cm">// En el componente — reactividad automática</span>
-<span class="kw">export class</span> <span class="cl">CarritoComponent</span> {
-  store = <span class="fn">inject</span>(<span class="cl">CarritoStore</span>);
-  <span class="cm">// template usa store.items(), store.total(), etc.</span>
+  <span class="fn">agregar</span>(p: <span class="tp">Producto</span>) { <span class="kw">this</span>._items.<span class="fn">update</span>(items => [...items, p]); }
+  <span class="fn">eliminar</span>(id: <span class="tp">number</span>) { <span class="kw">this</span>._items.<span class="fn">update</span>(items => items.<span class="fn">filter</span>(p => p.id !== id)); }
+  <span class="fn">vaciar</span>()              { <span class="kw">this</span>._items.<span class="fn">set</span>([]); }
 }</pre>
-  </div>
-</div>
-</section>
-
-<!-- TEMPLATES -->
-<section id="templates">
-<div class="container">
-  <div class="section-header"><div class="section-icon">🖼️</div><div><h2>Templates y Data Binding</h2><p>Interpolación, bindings, nueva sintaxis de control de flujo y event handling</p></div></div>
-
-  <div class="infograph">
-    <div class="infograph-title">🔗 Los 4 tipos de <span>Data Binding</span></div>
-    <div style="overflow-x:auto">
-      <table class="compare-table">
-        <thead><tr><th>Tipo</th><th>Sintaxis</th><th>Dirección</th><th>Descripción</th></tr></thead>
-        <tbody>
-          <tr><td>Interpolación</td><td><code style="color:var(--ng)">{{ expresion }}</code></td><td>Clase → DOM</td><td>Muestra el valor como texto. Cualquier expresión TypeScript válida.</td></tr>
-          <tr><td>Property Binding</td><td><code style="color:var(--ng)">[propiedad]="valor"</code></td><td>Clase → DOM</td><td>Enlaza propiedad DOM o @Input a una expresión. Acepta cualquier tipo.</td></tr>
-          <tr><td>Event Binding</td><td><code style="color:var(--ng)">(evento)="metodo()"</code></td><td>DOM → Clase</td><td>Escucha eventos del DOM. <code style="color:var(--ng)">$event</code> tiene el objeto del evento.</td></tr>
-          <tr><td>Two-way Binding</td><td><code style="color:var(--ng)">[(ngModel)]="valor"</code></td><td>Ambas</td><td>Sincroniza modelo y vista. Necesita FormsModule. También: <code style="color:var(--ng)">[(value)]</code>.</td></tr>
-        </tbody>
-      </table>
     </div>
   </div>
 
-  <div class="infograph">
-    <div class="infograph-title">🆕 Nueva sintaxis de <span>control de flujo</span> (Angular 17+)</div>
-    <pre><span class="cm">&lt;!-- @if — reemplaza *ngIf, más legible --&gt;</span>
-@if (cargando()) {
-  &lt;app-spinner /&gt;
-} @else if (error()) {
-  &lt;app-error [mensaje]="error()!" /&gt;
-} @else {
-  &lt;app-lista [items]="datos()" /&gt;
+  <div style="margin-top: 20px;">
+    <div style="font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 12px;">⚡ Flujo reactivo completo</div>
+    <div class="reactive-flow">
+      <div class="rf-label">Fuentes de datos</div>
+      <div class="rf-row">
+        <div class="rf-box rf-b-sig">signal(0)<small>Valor local</small></div>
+        <div class="rf-box rf-b-res">httpResource()<small>Servidor</small></div>
+        <div class="rf-box rf-b-sig" style="border-color:rgba(192,132,252,.35)">linkedSignal()<small>Sincronizado</small></div>
+      </div>
+      <div class="rf-arrow">↓</div>
+      <div class="rf-label">Derivaciones</div>
+      <div class="rf-row">
+        <div class="rf-box rf-b-com">computed(()=>...)<small>Lazy · memoizado · readonly</small></div>
+        <div class="rf-box rf-b-eff">effect(()=>{...})<small>Side effects · eager</small></div>
+      </div>
+      <div class="rf-arrow">↓</div>
+      <div class="rf-row">
+        <div class="rf-box rf-b-dom">Template — {{ value() }}<small>Solo nodos afectados se actualizan (zoneless)</small></div>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="divider"></div>
+
+<!-- ═══════════════════════ NUEVAS APIs v21 ═══════════════════════ -->
+<section class="section" id="nuevas-apis">
+  <div class="section-header">
+    <div class="section-icon">🆕</div>
+    <div><h2>Nuevas APIs de Angular 21</h2><p>Lo más nuevo: Signal Forms, linkedSignal, httpResource, Zoneless, Angular Aria y más</p></div>
+    <span class="section-badge">v21 · Nov 2025</span>
+  </div>
+
+  <div class="cards-grid">
+    <!-- Signal Forms -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon ci-red">SF</div>
+        <div><div class="card-title">Signal Forms</div><div class="card-subtitle">Nueva API de formularios</div></div>
+        <span class="card-tag tag-exp">Experimental</span>
+      </div>
+      <div class="card-body">
+        <div class="card-desc">Nueva API de formularios basada en Signals lanzada en Angular 21. El modelo es un signal sincronizado automáticamente con el template. Combina la simplicidad de template-driven con el poder de reactive forms.</div>
+        <div class="card-warn">⚠️ Experimental — la API puede cambiar antes de estabilizarse.</div>
+        <div class="code-wrap"><div class="code-label">Signal Forms en acción <span class="code-lang">TS</span></div><pre><span class="kw">import</span> { form } <span class="kw">from</span> <span class="str">'@angular/forms'</span>;
+
+<span class="dec">@Component</span>({ <span class="fn">template</span>: <span class="str">`
+  &lt;input [field]="loginForm.email()" /&gt;
+  &lt;input [field]="loginForm.password()"
+         type=<span class="str">"password"</span> /&gt;
+  &lt;p&gt;{{ user().email }}&lt;/p&gt;
+`</span>})
+<span class="kw">export class</span> <span class="tp">LoginComponent</span> {
+  user = <span class="fn">signal</span>({ email: <span class="str">''</span>, password: <span class="str">''</span> });
+  loginForm = <span class="fn">form</span>(<span class="kw">this</span>.user); <span class="cm">// sincronización automática</span>
+}</pre></div>
+      </div>
+    </div>
+
+    <!-- linkedSignal -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon ci-purple">LS</div>
+        <div><div class="card-title">linkedSignal()</div><div class="card-subtitle">Signal con reset automático</div></div>
+        <span class="card-tag tag-new">v18+</span>
+      </div>
+      <div class="card-body">
+        <div class="card-desc">Signal writable que se resincroniza automáticamente cuando su fuente cambia. Perfecto para selecciones que deben resetear al cambiar la lista fuente.</div>
+        <div class="card-tip"><span class="card-tip-icon">💡</span>Caso clásico: ítem seleccionado que se resetea al cambiar la lista o categoría.</div>
+        <div class="code-wrap"><div class="code-label">Selector que se resetea <span class="code-lang">TS</span></div><pre><span class="kw">const</span> options = <span class="fn">signal</span>([<span class="str">'A'</span>, <span class="str">'B'</span>, <span class="str">'C'</span>]);
+
+<span class="cm">// Se resetea a options()[0] cuando options cambia</span>
+<span class="kw">const</span> selected = <span class="fn">linkedSignal</span>(() => <span class="fn">options</span>()[<span class="num">0</span>]);
+
+selected.<span class="fn">set</span>(<span class="str">'B'</span>);           <span class="cm">// escritura manual OK</span>
+options.<span class="fn">set</span>([<span class="str">'X'</span>, <span class="str">'Y'</span>]);   <span class="cm">// selected → 'X' auto</span></pre></div>
+      </div>
+    </div>
+
+    <!-- httpResource -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon ci-pink">HR</div>
+        <div><div class="card-title">httpResource()</div><div class="card-subtitle">Fetching reactivo con Signals</div></div>
+        <span class="card-tag tag-exp">Experimental</span>
+      </div>
+      <div class="card-body">
+        <div class="card-desc">Reemplaza el patrón <code>ngOnInit + subscribe</code>. Se re-fetcha automáticamente cuando los signals de sus parámetros cambian. Auto-cancela requests anteriores.</div>
+        <div class="res-states">
+          <div class="res-state rs-idle">idle <small>Sin parámetros válidos aún</small></div>
+          <div class="res-state rs-loading">loading <small>Request en vuelo · cancela la anterior</small></div>
+          <div class="res-state rs-ok">resolved <small>resource.value() disponible</small></div>
+          <div class="res-state rs-err">error <small>resource.error() disponible</small></div>
+        </div>
+        <div class="code-wrap"><div class="code-label">Ejemplo reactivo <span class="code-lang">TS</span></div><pre><span class="kw">const</span> page = <span class="fn">signal</span>(<span class="num">1</span>);
+<span class="kw">const</span> q    = <span class="fn">signal</span>(<span class="str">''</span>);
+<span class="kw">const</span> products = <span class="fn">httpResource</span>(() => ({
+  url: <span class="str">'/api/products'</span>,
+  params: { page: <span class="fn">page</span>(), q: <span class="fn">q</span>() }
+}), { defaultValue: [] });
+
+products.<span class="fn">value</span>()   <span class="cm">// los datos</span>
+products.<span class="fn">status</span>()  <span class="cm">// 'idle'|'loading'|...'</span>
+products.<span class="fn">error</span>()   <span class="cm">// el error si falló</span></pre></div>
+      </div>
+    </div>
+
+    <!-- Zoneless -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon ci-green">Z</div>
+        <div><div class="card-title">Zoneless Angular</div><div class="card-subtitle">Sin Zone.js — default v21</div></div>
+        <span class="card-tag tag-new">Default v21</span>
+      </div>
+      <div class="card-body">
+        <div class="card-desc">Desde Angular 21 los proyectos nuevos no incluyen Zone.js. Angular detecta cambios solo cuando un Signal cambia. Bundles más pequeños, CD más preciso y predecible.</div>
+        <div class="card-ok">✅ Default en proyectos nuevos v21. Activa el provider para migrar existentes.</div>
+        <div class="code-wrap"><div class="code-label">Migrar a Zoneless <span class="code-lang">TS</span></div><pre><span class="cm">// app.config.ts</span>
+providers: [
+  <span class="fn">provideExperimentalZonelessChangeDetection</span>()
+  <span class="cm">// + elimina zone.js de polyfills array</span>
+]</pre></div>
+      </div>
+    </div>
+
+    <!-- Angular Aria -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon ci-blue">A11</div>
+        <div><div class="card-title">Angular Aria (@angular/aria)</div><div class="card-subtitle">Componentes headless accesibles</div></div>
+        <span class="card-tag tag-new">Dev Preview</span>
+      </div>
+      <div class="card-body">
+        <div class="card-desc">Nueva librería oficial headless de 13 componentes sin estilos. Basada en Signals. Accesibilidad correcta por defecto: ARIA, navegación por teclado y screen readers. Tú pones los estilos.</div>
+        <div class="card-tip"><span class="card-tip-icon">💡</span>Para design systems custom con accesibilidad. Complementario a Angular Material, no lo reemplaza.</div>
+        <div class="code-wrap"><div class="code-label">Combobox accesible headless <span class="code-lang">TS</span></div><pre><span class="cm">// npm i @angular/aria</span>
+<span class="dec">@Component</span>({
+  <span class="fn">imports</span>: [AriaCombobox, AriaComboboxOption],
+  <span class="fn">template</span>: <span class="str">`
+    &lt;div ariaCombobox&gt;
+      &lt;input ariaComboboxTrigger /&gt;
+      @for (item of items(); track item.id) {
+        &lt;div ariaComboboxOption [value]="item"&gt;
+          {{ item.name }}
+        &lt;/div&gt;
+      }
+    &lt;/div&gt;`</span>
+})</pre></div>
+      </div>
+    </div>
+
+    <!-- Vitest -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon ci-green">VT</div>
+        <div><div class="card-title">Vitest — nuevo test runner</div><div class="card-subtitle">Reemplaza Karma</div></div>
+        <span class="card-tag tag-new">Default v21</span>
+      </div>
+      <div class="card-body">
+        <div class="card-desc">Angular 21 usa Vitest por defecto en proyectos nuevos. Más rápido que Karma, fake timers nativos, snapshots, paralelización. Karma sigue soportado para proyectos existentes.</div>
+        <div class="code-wrap"><div class="code-label">Test con Vitest <span class="code-lang">TS</span></div><pre><span class="fn">describe</span>(<span class="str">'CounterComponent'</span>, () => {
+  <span class="fn">it</span>(<span class="str">'incrementa el signal'</span>, () => {
+    <span class="kw">const</span> f = TestBed.<span class="fn">createComponent</span>(<span class="tp">Counter</span>);
+    f.componentInstance.count.<span class="fn">set</span>(<span class="num">5</span>);
+    f.<span class="fn">detectChanges</span>();
+    <span class="fn">expect</span>(f.componentInstance.<span class="fn">count</span>()).toBe(<span class="num">5</span>);
+  });
+});</pre></div>
+      </div>
+    </div>
+
+    <!-- animate.enter/leave -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon ci-pink">AN</div>
+        <div><div class="card-title">animate.enter / animate.leave</div><div class="card-subtitle">Animaciones declarativas</div></div>
+        <span class="card-tag tag-new">v21</span>
+      </div>
+      <div class="card-body">
+        <div class="card-desc">Nueva API minimalista de animaciones en el template. Sin imports complejos. Para casos simples reemplaza el DSL de <code>@angular/animations</code>.</div>
+        <div class="code-wrap"><div class="code-label">Animaciones sin DSL <span class="code-lang">HTML</span></div><pre>@<span class="fn">for</span> (item <span class="kw">of</span> <span class="fn">items</span>(); track item.id) {
+  &lt;div animate.enter=<span class="str">"fade-in"</span>
+       animate.leave=<span class="str">"fade-out"</span>&gt;
+    {{ item.name }}
+  &lt;/div&gt;
+}
+<span class="cm">/* CSS */</span>
+.fade-in  { animation: fadeIn  .3s ease }
+.fade-out { animation: fadeOut .2s ease }</pre></div>
+      </div>
+    </div>
+
+    <!-- MCP Server -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon ci-teal">AI</div>
+        <div><div class="card-title">Angular MCP Server</div><div class="card-subtitle">AI-powered development</div></div>
+        <span class="card-tag tag-new">v21</span>
+      </div>
+      <div class="card-body">
+        <div class="card-desc">El CLI incluye un servidor MCP (Model Context Protocol) con 7 herramientas. Permite que LLMs (Cursor, VS Code, etc.) generen código Angular 21 moderno con Signals, control flow y standalone.</div>
+        <div class="code-wrap"><div class="code-label">Configurar en Cursor <span class="code-lang">JSON</span></div><pre>{
+  <span class="str">"angular"</span>: {
+    <span class="str">"command"</span>: <span class="str">"npx"</span>,
+    <span class="str">"args"</span>: [
+      <span class="str">"@angular/mcp@latest"</span>,
+      <span class="str">"--project-path"</span>, <span class="str">"."</span>
+    ]
+  }
+}</pre></div>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="divider"></div>
+
+<!-- ═══════════════════════ TEMPLATES ═══════════════════════ -->
+<section class="section" id="templates">
+  <div class="section-header">
+    <div class="section-icon">🖼️</div>
+    <div><h2>Templates y Data Binding</h2><p>Interpolación, bindings y nueva sintaxis de control de flujo</p></div>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Tipo</th><th>Sintaxis</th><th>Dirección</th><th>Descripción</th></tr></thead>
+      <tbody>
+        <tr><td>Interpolación</td><td><code>{{ expresion }}</code></td><td>Clase → DOM</td><td>Muestra el valor como texto.</td></tr>
+        <tr><td>Property Binding</td><td><code>[propiedad]="valor"</code></td><td>Clase → DOM</td><td>Enlaza propiedad DOM o @Input a una expresión.</td></tr>
+        <tr><td>Event Binding</td><td><code>(evento)="metodo()"</code></td><td>DOM → Clase</td><td>Escucha eventos. <code>$event</code> tiene el objeto del evento.</td></tr>
+        <tr><td>Two-way Binding</td><td><code>[(ngModel)]="valor"</code></td><td>Ambas</td><td>Sincroniza modelo y vista. Necesita FormsModule.</td></tr>
+        <tr><td>Signal Binding</td><td><code>{{ miSignal() }}</code></td><td>Signal → DOM</td><td>Angular actualiza solo los nodos donde el signal cambia.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="full-card" style="margin-top: 16px;">
+    <div class="full-card-head">🆕 Nueva sintaxis de control de flujo (Angular 17+)</div>
+    <div class="full-card-body">
+      <pre><span class="cm">&lt;!-- @if — reemplaza *ngIf --&gt;</span>
+@<span class="kw">if</span> (<span class="fn">cargando</span>()) { &lt;app-spinner /&gt; }
+@<span class="kw">else if</span> (<span class="fn">error</span>()) { &lt;app-error [mensaje]=<span class="str">"error()!"</span> /&gt; }
+@<span class="kw">else</span>           { &lt;app-lista [items]=<span class="str">"datos()"</span> /&gt; }
+
+<span class="cm">&lt;!-- @for — track OBLIGATORIO --&gt;</span>
+@<span class="fn">for</span> (producto <span class="kw">of</span> <span class="fn">productos</span>(); track producto.id) {
+  &lt;app-card [data]=<span class="str">"producto"</span> /&gt;
+} @<span class="fn">empty</span> {
+  &lt;p class=<span class="str">"vacio"</span>&gt;No hay productos disponibles&lt;/p&gt;
 }
 
-<span class="cm">&lt;!-- @for — reemplaza *ngFor. track es OBLIGATORIO --&gt;</span>
-@for (producto of productos(); track producto.id) {
-  &lt;app-producto-card [data]="producto" /&gt;
-} @empty {
-  &lt;p class="vacio"&gt;No hay productos disponibles&lt;/p&gt;
+<span class="cm">&lt;!-- @for con variables de loop --&gt;</span>
+@<span class="fn">for</span> (item <span class="kw">of</span> <span class="fn">items</span>(); track item.id; <span class="kw">let</span> i = $index, last = $last) {
+  &lt;div [class.ultimo]=<span class="str">"last"</span>&gt;{{ i + 1 }}. {{ item.nombre }}&lt;/div&gt;
 }
 
 <span class="cm">&lt;!-- @switch — reemplaza [ngSwitch] --&gt;</span>
-@switch (usuario().rol) {
-  @case ('admin')    { &lt;app-admin-panel /&gt; }
-  @case ('editor')   { &lt;app-editor-panel /&gt; }
-  @default           { &lt;app-viewer-panel /&gt; }
+@<span class="kw">switch</span> (<span class="fn">usuario</span>().<span class="fn">rol</span>) {
+  @<span class="kw">case</span> (<span class="str">'admin'</span>)  { &lt;app-admin-panel /&gt; }
+  @<span class="kw">case</span> (<span class="str">'editor'</span>) { &lt;app-editor-panel /&gt; }
+  @<span class="fn">default</span>          { &lt;app-viewer-panel /&gt; }
+}</pre>
+    </div>
+  </div>
+</section>
+<div class="divider"></div>
+
+<!-- ═══════════════════════ DIRECTIVAS ═══════════════════════ -->
+<section class="section" id="directivas">
+  <div class="section-header">
+    <div class="section-icon">🏷️</div>
+    <div><h2>Directivas</h2><p>Built-in, personalizadas, diferencia entre estructurales y de atributo</p></div>
+  </div>
+
+  <div class="dir-cols">
+    <div class="dir-group">
+      <div class="dir-group-head">Nueva sintaxis (v17+)</div>
+      <div class="dir-item"><code>@if</code><div class="dir-item-desc">Condicional en template</div></div>
+      <div class="dir-item"><code>@for</code><div class="dir-item-desc">Bucle — track obligatorio</div></div>
+      <div class="dir-item"><code>@switch</code><div class="dir-item-desc">Switch en template</div></div>
+      <div class="dir-item"><code>@defer</code><div class="dir-item-desc">Carga diferida con triggers</div></div>
+      <div class="dir-item"><code>@empty</code><div class="dir-item-desc">Bloque para lista vacía</div></div>
+    </div>
+    <div class="dir-group">
+      <div class="dir-group-head">De Atributo</div>
+      <div class="dir-item"><code>[ngClass]</code><div class="dir-item-desc">Clases CSS condicionales</div></div>
+      <div class="dir-item"><code>[ngStyle]</code><div class="dir-item-desc">Estilos inline dinámicos</div></div>
+      <div class="dir-item"><code>[(ngModel)]</code><div class="dir-item-desc">Two-way binding en forms</div></div>
+      <div class="dir-item"><code>ngSrc</code><div class="dir-item-desc">Imágenes optimizadas</div></div>
+      <div class="dir-item"><code>routerLink</code><div class="dir-item-desc">Navegación SPA</div></div>
+    </div>
+    <div class="dir-group">
+      <div class="dir-group-head">Legacy (válidas)</div>
+      <div class="dir-item"><code>*ngIf</code><div class="dir-item-desc">Reemplazada por @if</div></div>
+      <div class="dir-item"><code>*ngFor</code><div class="dir-item-desc">Reemplazada por @for</div></div>
+      <div class="dir-item"><code>[ngSwitch]</code><div class="dir-item-desc">Reemplazada por @switch</div></div>
+      <div class="dir-item"><code>ng-template</code><div class="dir-item-desc">Bloque reutilizable</div></div>
+      <div class="dir-item"><code>ng-container</code><div class="dir-item-desc">Agrupador sin nodo DOM</div></div>
+    </div>
+    <div class="dir-group">
+      <div class="dir-group-head">CDK Angular</div>
+      <div class="dir-item"><code>cdkDrag</code><div class="dir-item-desc">Drag and drop</div></div>
+      <div class="dir-item"><code>cdkVirtualFor</code><div class="dir-item-desc">Virtual scrolling</div></div>
+      <div class="dir-item"><code>cdkOverlay</code><div class="dir-item-desc">Overlays posicionados</div></div>
+      <div class="dir-item"><code>cdkPortal</code><div class="dir-item-desc">Renderiza en otro lugar</div></div>
+      <div class="dir-item"><code>ariaCombobox</code><div class="dir-item-desc">Accesibilidad headless ✨</div></div>
+    </div>
+  </div>
+
+  <div class="full-card">
+    <div class="full-card-head">🔨 Crear una directiva personalizada</div>
+    <div class="full-card-body">
+      <pre><span class="dec">@Directive</span>({
+  selector: <span class="str">'[appResaltar]'</span>,
+  standalone: <span class="kw">true</span>,
+  host: {
+    <span class="str">'(mouseenter)'</span>: <span class="str">'onEnter()'</span>,
+    <span class="str">'(mouseleave)'</span>: <span class="str">'onLeave()'</span>,
+    <span class="str">'[style.cursor]'</span>: <span class="str">'"pointer"'</span>
+  }
+})
+<span class="kw">export class</span> <span class="tp">ResaltarDirective</span> {
+  <span class="fn">@Input</span>(<span class="str">'appResaltar'</span>) color = <span class="str">'#fde68a'</span>;
+  <span class="kw">private</span> el       = <span class="fn">inject</span>(<span class="tp">ElementRef</span>);
+  <span class="kw">private</span> renderer = <span class="fn">inject</span>(<span class="tp">Renderer2</span>);
+
+  <span class="fn">onEnter</span>() { <span class="kw">this</span>.renderer.<span class="fn">setStyle</span>(<span class="kw">this</span>.el.nativeElement, <span class="str">'background'</span>, <span class="kw">this</span>.color); }
+  <span class="fn">onLeave</span>() { <span class="kw">this</span>.renderer.<span class="fn">removeStyle</span>(<span class="kw">this</span>.el.nativeElement, <span class="str">'background'</span>); }
+}
+<span class="cm">&lt;!-- &lt;p appResaltar="lightblue"&gt;Pásame el mouse&lt;/p&gt; --&gt;</span></pre>
+    </div>
+  </div>
+</section>
+<div class="divider"></div>
+
+<!-- ═══════════════════════ ROUTING ═══════════════════════ -->
+<section class="section" id="routing">
+  <div class="section-header">
+    <div class="section-icon">🧭</div>
+    <div><h2>Routing y Navegación</h2><p>Rutas, lazy loading, guards, resolvers y navegación programática</p></div>
+  </div>
+
+  <div class="cards-grid cols2">
+    <div class="card">
+      <div class="card-header"><div class="card-icon ci-blue">RT</div><div><div class="card-title">Configuración completa</div></div></div>
+      <div class="card-body">
+        <pre><span class="kw">export const</span> routes: <span class="tp">Routes</span> = [
+  { path: <span class="str">''</span>, redirectTo: <span class="str">'home'</span>, pathMatch: <span class="str">'full'</span> },
+  { path: <span class="str">'home'</span>, component: <span class="tp">HomeComponent</span> },
+  { path: <span class="str">'usuario/:id'</span>, component: <span class="tp">UsuarioComponent</span> },
+
+  <span class="cm">// Lazy loading standalone component</span>
+  {
+    path: <span class="str">'perfil'</span>,
+    canActivate: [authGuard],
+    loadComponent: () => <span class="fn">import</span>(<span class="str">'./perfil.component'</span>)
+                         .then(m => m.<span class="tp">PerfilComponent</span>)
+  },
+  <span class="cm">// Lazy loading feature routes</span>
+  {
+    path: <span class="str">'admin'</span>,
+    canActivate: [authGuard, <span class="fn">roleGuard</span>(<span class="str">'admin'</span>)],
+    loadChildren: () => <span class="fn">import</span>(<span class="str">'./admin/admin.routes'</span>)
+                        .then(m => m.ADMIN_ROUTES)
+  },
+  { path: <span class="str">'**'</span>, component: <span class="tp">NotFoundComponent</span> }
+];</pre>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-icon ci-teal">NV</div><div><div class="card-title">withComponentInputBinding — sin ActivatedRoute</div></div></div>
+      <div class="card-body">
+        <div class="card-tip"><span class="card-tip-icon">💡</span>Activa <code>withComponentInputBinding()</code> en todos los proyectos nuevos. Elimina el inject(ActivatedRoute) en la mayoría de casos.</div>
+        <pre><span class="cm">// app.config.ts</span>
+<span class="fn">provideRouter</span>(routes,
+  <span class="fn">withComponentInputBinding</span>())
+
+<span class="cm">// Componente — el :id llega como @Input!</span>
+<span class="kw">export class</span> <span class="tp">ProductoComponent</span> {
+  <span class="fn">@Input</span>() id!: <span class="tp">string</span>;
+  producto = <span class="fn">httpResource</span>(() =>
+    <span class="str">`/api/productos/${this.id}`</span>
+  );
 }
 
-<span class="cm">&lt;!-- Acceso a variables del @for --&gt;</span>
-@for (item of items(); track item.id; let i = $index, last = $last) {
-  &lt;div [class.ultimo]="last"&gt;{{ i + 1 }}. {{ item.nombre }}&lt;/div&gt;
+<span class="cm">// Navegación con query params</span>
+<span class="fn">buscar</span>(q: <span class="tp">string</span>) {
+  <span class="kw">this</span>.router.<span class="fn">navigate</span>([<span class="str">'/buscar'</span>], {
+    queryParams: { q, pagina: <span class="num">1</span> },
+    queryParamsHandling: <span class="str">'merge'</span>
+  });
 }</pre>
-  </div>
-
-  <div class="infograph">
-    <div class="infograph-title">🎨 Class, Style Binding y <span>eventos avanzados</span></div>
-    <pre><span class="cm">&lt;!-- Clase condicional simple --&gt;</span>
-&lt;button [class.activo]="isActive" [class.disabled]="!enabled"&gt;
-
-&lt;!-- Objeto de clases --&gt;
-&lt;div [ngClass]="{ activo: isActive, error: hasError, 'text-lg': size === 'lg' }"&gt;
-
-&lt;!-- Style binding --&gt;
-&lt;div [style.color]="colorPrimario" [style.font-size.px]="fontSize"&gt;
-
-&lt;!-- Eventos con $event --&gt;
-&lt;input (input)="busqueda.set($any($event.target).value)"&gt;
-&lt;form (ngSubmit)="onSubmit()"&gt;
-
-&lt;!-- Eventos del teclado --&gt;
-&lt;input (keydown.enter)="buscar()" (keydown.escape)="limpiar()"&gt;
-
-&lt;!-- Two-way moderno con Signal --&gt;
-&lt;input
-  [value]="nombre()"
-  (input)="nombre.set($any($event.target).value)"&gt;</pre>
-  </div>
-</div>
-</section>
-
-<!-- DIRECTIVAS -->
-<section id="directivas">
-<div class="container">
-  <div class="section-header"><div class="section-icon">🏷️</div><div><h2>Directivas</h2><p>Built-in, personalizadas y la diferencia entre estructurales y de atributo</p></div></div>
-  <div class="infograph">
-    <div class="infograph-title">🏷️ Directivas <span>integradas</span> más usadas</div>
-    <div class="ann-grid">
-      <div class="ann-group">
-        <div class="ann-group-title" style="color:var(--ng)">Sintaxis nueva (17+)</div>
-        <div class="ann-item"><code>@if</code><span>Condicional en template</span></div>
-        <div class="ann-item"><code>@for</code><span>Bucle con track obligatorio</span></div>
-        <div class="ann-item"><code>@switch</code><span>Switch en template</span></div>
-        <div class="ann-item"><code>@defer</code><span>Carga diferida con triggers</span></div>
-        <div class="ann-item"><code>@empty</code><span>Bloque para colección vacía</span></div>
-      </div>
-      <div class="ann-group">
-        <div class="ann-group-title" style="color:var(--blue)">De Atributo</div>
-        <div class="ann-item"><code>[ngClass]</code><span>Clases CSS condicionales</span></div>
-        <div class="ann-item"><code>[ngStyle]</code><span>Estilos inline dinámicos</span></div>
-        <div class="ann-item"><code>[(ngModel)]</code><span>Two-way binding en forms</span></div>
-        <div class="ann-item"><code>ngOptimizedImage</code><span>Imágenes optimizadas</span></div>
-        <div class="ann-item"><code>routerLink</code><span>Navegación SPA sin reload</span></div>
-      </div>
-      <div class="ann-group">
-        <div class="ann-group-title" style="color:var(--green)">Legacy (aún válidas)</div>
-        <div class="ann-item"><code>*ngIf</code><span>Condicional (reemplazada por @if)</span></div>
-        <div class="ann-item"><code>*ngFor</code><span>Bucle (reemplazada por @for)</span></div>
-        <div class="ann-item"><code>[ngSwitch]</code><span>Switch (reemplazada por @switch)</span></div>
-        <div class="ann-item"><code>ng-template</code><span>Bloque reutilizable</span></div>
-        <div class="ann-item"><code>ng-container</code><span>Agrupador sin nodo DOM</span></div>
-      </div>
-      <div class="ann-group">
-        <div class="ann-group-title" style="color:var(--yellow)">CDK Angular</div>
-        <div class="ann-item"><code>cdkDrag</code><span>Drag and drop</span></div>
-        <div class="ann-item"><code>cdkVirtualFor</code><span>Virtual scrolling</span></div>
-        <div class="ann-item"><code>cdkOverlay</code><span>Overlays posicionados</span></div>
-        <div class="ann-item"><code>cdkPortal</code><span>Renderiza en otro lugar</span></div>
       </div>
     </div>
   </div>
-  <div class="infograph">
-    <div class="infograph-title">🔨 Crear una <span>directiva personalizada</span></div>
-    <pre><span class="cm">// resaltar.directive.ts</span>
-<span class="dc">@Directive</span>({
-  selector: <span class="st">'[appResaltar]'</span>,
-  standalone: <span class="kw">true</span>,
-  host: {
-    <span class="st">'(mouseenter)'</span>: <span class="st">'onEnter()'</span>,
-    <span class="st">'(mouseleave)'</span>: <span class="st">'onLeave()'</span>,
-    <span class="st">'[style.cursor]'</span>: <span class="st">'"pointer"'</span>
-  }
-})
-<span class="kw">export class</span> <span class="cl">ResaltarDirective</span> {
-  <span class="dc">@Input</span>(<span class="st">'appResaltar'</span>) color = <span class="st">'#fde68a'</span>;
-
-  <span class="kw">private</span> el       = <span class="fn">inject</span>(<span class="cl">ElementRef</span>);
-  <span class="kw">private</span> renderer = <span class="fn">inject</span>(<span class="cl">Renderer2</span>);
-
-  <span class="fn">onEnter</span>() {
-    <span class="kw">this</span>.renderer.<span class="fn">setStyle</span>(<span class="kw">this</span>.el.nativeElement, <span class="st">'background'</span>, <span class="kw">this</span>.color);
-    <span class="kw">this</span>.renderer.<span class="fn">setStyle</span>(<span class="kw">this</span>.el.nativeElement, <span class="st">'transition'</span>, <span class="st">'background .2s'</span>);
-  }
-  <span class="fn">onLeave</span>() {
-    <span class="kw">this</span>.renderer.<span class="fn">removeStyle</span>(<span class="kw">this</span>.el.nativeElement, <span class="st">'background'</span>);
-  }
-}
-<span class="cm">&lt;!-- &lt;p appResaltar="lightblue"&gt;Pásame el mouse&lt;/p&gt; --&gt;</span></pre>
-  </div>
-</div>
 </section>
+<div class="divider"></div>
 
-<!-- ROUTING -->
-<section id="routing">
-<div class="container">
-  <div class="section-header"><div class="section-icon">🧭</div><div><h2>Routing y Navegación</h2><p>Rutas, parámetros, lazy loading, guardas y navegación programática</p></div></div>
-  <div class="infograph">
-    <div class="infograph-title">🗺️ Configuración de <span>rutas</span> completa</div>
-    <pre><span class="cm">// app.routes.ts</span>
-<span class="kw">export const</span> routes: <span class="cl">Routes</span> = [
-  { path: <span class="st">''</span>, redirectTo: <span class="st">'home'</span>, pathMatch: <span class="st">'full'</span> },
-  { path: <span class="st">'home'</span>, component: <span class="cl">HomeComponent</span> },
-
-  <span class="cm">// Ruta con parámetro</span>
-  { path: <span class="st">'usuario/:id'</span>, component: <span class="cl">UsuarioComponent</span> },
-
-  <span class="cm">// Lazy loading de componente standalone</span>
-  {
-    path: <span class="st">'perfil'</span>,
-    canActivate: [authGuard],
-    loadComponent: () => <span class="fn">import</span>(<span class="st">'./perfil/perfil.component'</span>)
-                         .then(m => m.<span class="cl">PerfilComponent</span>)
-  },
-
-  <span class="cm">// Lazy loading de sub-rutas (feature routes)</span>
-  {
-    path: <span class="st">'admin'</span>,
-    canActivate: [authGuard, roleGuard(<span class="st">'admin'</span>)],
-    loadChildren: () => <span class="fn">import</span>(<span class="st">'./admin/admin.routes'</span>)
-                        .then(m => m.ADMIN_ROUTES)
-  },
-
-  <span class="cm">// Resolver — precarga datos antes de activar</span>
-  {
-    path: <span class="st">'detalle/:id'</span>,
-    resolve: { producto: productoResolver },
-    loadComponent: () => <span class="fn">import</span>(<span class="st">'./detalle/detalle.component'</span>)
-                         .then(m => m.<span class="cl">DetalleComponent</span>)
-  },
-
-  <span class="cm">// Ruta comodín — 404</span>
-  { path: <span class="st">'**'</span>, component: <span class="cl">NotFoundComponent</span> }
-];</pre>
+<!-- ═══════════════════════ FORMS ═══════════════════════ -->
+<section class="section" id="forms">
+  <div class="section-header">
+    <div class="section-icon">📝</div>
+    <div><h2>Formularios</h2><p>Template-driven, Reactive Forms y el nuevo Signal Forms de Angular 21</p></div>
   </div>
-  <div class="infograph">
-    <div class="infograph-title">🧭 Navegación y <span>parámetros</span></div>
-    <pre><span class="kw">export class</span> <span class="cl">DetalleComponent</span> {
-  <span class="kw">private</span> router = <span class="fn">inject</span>(<span class="cl">Router</span>);
-  <span class="kw">private</span> route  = <span class="fn">inject</span>(<span class="cl">ActivatedRoute</span>);
 
-  <span class="cm">// Con withComponentInputBinding() en provideRouter():</span>
-  <span class="cm">// los route params llegan directamente como @Input o input()</span>
-  id = <span class="fn">input</span>.required&lt;<span class="kw">string</span>&gt;();
-
-  <span class="cm">// Datos del resolver</span>
-  producto = <span class="kw">this</span>.route.snapshot.data[<span class="st">'producto'</span>] <span class="kw">as</span> <span class="cl">Producto</span>;
-
-  <span class="cm">// Query params reactivos</span>
-  queryParams = <span class="fn">toSignal</span>(<span class="kw">this</span>.route.queryParams);
-
-  <span class="cm">// Navegar con extras</span>
-  <span class="fn">volver</span>() { <span class="kw">this</span>.router.<span class="fn">navigate</span>([<span class="st">'..'</span>], { relativeTo: <span class="kw">this</span>.route }); }
-
-  <span class="fn">buscar</span>(q: <span class="kw">string</span>) {
-    <span class="kw">this</span>.router.<span class="fn">navigate</span>([<span class="st">'/buscar'</span>], {
-      queryParams: { q, pagina: <span class="nm">1</span> },
-      queryParamsHandling: <span class="st">'merge'</span>
-    });
-  }
-}
-<span class="cm">&lt;!-- &lt;a [routerLink]="['/usuario', id]" routerLinkActive="activo"&gt;Ver&lt;/a&gt; --&gt;</span></pre>
+  <div class="forms-grid">
+    <div class="form-card" style="border: 1px solid rgba(251,191,36,.2);">
+      <div class="form-card-name" style="color: var(--yellow);">Template-Driven</div>
+      <div class="form-card-row">ngModel en template</div>
+      <div class="form-card-row">Simple, poco código TS</div>
+      <div class="form-card-row">Validación en HTML</div>
+      <div class="form-card-row">Sin tipado estricto</div>
+      <div class="form-card-row" style="color:var(--yellow);margin-top:8px;">→ Forms simples / rápidos</div>
+    </div>
+    <div class="form-card" style="border: 1px solid rgba(79,195,247,.2);">
+      <div class="form-card-name" style="color: var(--blue);">Reactive Forms</div>
+      <div class="form-card-row">FormGroup/FormControl</div>
+      <div class="form-card-row">TypedForms (v14+)</div>
+      <div class="form-card-row">Validación imperativa</div>
+      <div class="form-card-row">Estable y maduro</div>
+      <div class="form-card-row" style="color:var(--blue);margin-top:8px;">→ Enterprise / producción</div>
+    </div>
+    <div class="form-card" style="border: 1px solid rgba(74,222,128,.3);">
+      <div class="form-card-name" style="color: var(--green);">Signal Forms ✨ v21</div>
+      <div class="form-card-row">Model = signal()</div>
+      <div class="form-card-row">Sync automático template</div>
+      <div class="form-card-row">Full type-safe nativo</div>
+      <div class="form-card-row">Sin ControlValueAccessor</div>
+      <div class="form-card-row" style="color:var(--yellow);margin-top:8px;">⚠️ Experimental aún</div>
+    </div>
   </div>
-</div>
-</section>
 
-<!-- FORMS -->
-<section id="forms">
-<div class="container">
-  <div class="section-header"><div class="section-icon">📝</div><div><h2>Formularios Reactivos</h2><p>Reactive Forms: el estándar para formularios complejos con validación robusta</p></div></div>
-  <div class="infograph">
-    <div class="infograph-title">📋 <span>Reactive Forms</span> completo con validación</div>
-    <pre><span class="kw">export class</span> <span class="cl">RegistroComponent</span> {
-  <span class="kw">private</span> fb  = <span class="fn">inject</span>(<span class="cl">FormBuilder</span>);
-  <span class="kw">private</span> svc = <span class="fn">inject</span>(<span class="cl">AuthService</span>);
+  <div class="full-card">
+    <div class="full-card-head">📋 Reactive Forms con validación completa</div>
+    <div class="full-card-body">
+      <pre><span class="kw">export class</span> <span class="tp">RegistroComponent</span> {
+  <span class="kw">private</span> fb  = <span class="fn">inject</span>(<span class="tp">FormBuilder</span>);
+  <span class="kw">private</span> svc = <span class="fn">inject</span>(<span class="tp">AuthService</span>);
 
   form = <span class="kw">this</span>.fb.<span class="fn">group</span>({
-    nombre:   [<span class="st">''</span>, [<span class="cl">Validators</span>.required, <span class="cl">Validators</span>.<span class="fn">minLength</span>(<span class="nm">2</span>)]],
-    email:    [<span class="st">''</span>, [<span class="cl">Validators</span>.required, <span class="cl">Validators</span>.email]],
-    password: [<span class="st">''</span>, [<span class="cl">Validators</span>.required, <span class="cl">Validators</span>.<span class="fn">minLength</span>(<span class="nm">8</span>),
-                     <span class="fn">passwordFuerteValidator</span>]],
-    edad:     [<span class="kw">null</span>, [<span class="cl">Validators</span>.<span class="fn">min</span>(<span class="nm">18</span>), <span class="cl">Validators</span>.<span class="fn">max</span>(<span class="nm">120</span>)]],
+    nombre:   [<span class="str">''</span>, [Validators.required, Validators.<span class="fn">minLength</span>(<span class="num">2</span>)]],
+    email:    [<span class="str">''</span>, [Validators.required, Validators.email]],
+    password: [<span class="str">''</span>, [Validators.required, Validators.<span class="fn">minLength</span>(<span class="num">8</span>), passwordFuerteValidator]],
   });
-
-  <span class="cm">// Acceso rápido a controles</span>
-  <span class="fn">get</span> email()    { <span class="kw">return</span> <span class="kw">this</span>.form.<span class="fn">get</span>(<span class="st">'email'</span>); }
-  <span class="fn">get</span> password() { <span class="kw">return</span> <span class="kw">this</span>.form.<span class="fn">get</span>(<span class="st">'password'</span>); }
 
   <span class="fn">onSubmit</span>() {
     <span class="kw">if</span> (<span class="kw">this</span>.form.invalid) { <span class="kw">this</span>.form.<span class="fn">markAllAsTouched</span>(); <span class="kw">return</span>; }
@@ -766,296 +1640,577 @@ total(); <span class="cm">// → 119 (recalcula solo si precio o iva cambian)</s
   }
 }
 
-<span class="cm">// Validador personalizado sincrónico</span>
-<span class="kw">const</span> <span class="fn">passwordFuerteValidator</span>: <span class="cl">ValidatorFn</span> = (c) =>
-  /[A-Z]/.test(c.value) &amp;&amp; /[0-9]/.test(c.value)
-    ? <span class="kw">null</span>
-    : { passwordDebil: <span class="kw">true</span> };
-
-<span class="cm">// Validador asíncrono (ej: verificar email en API)</span>
-<span class="kw">const</span> <span class="fn">emailDisponibleValidator</span>: <span class="cl">AsyncValidatorFn</span> = (c) => {
-  <span class="kw">return</span> <span class="fn">inject</span>(<span class="cl">AuthService</span>).<span class="fn">emailDisponible</span>(c.value).<span class="fn">pipe</span>(
-    <span class="fn">map</span>(disponible => disponible ? <span class="kw">null</span> : { emailTomado: <span class="kw">true</span> })
-  );
-};</pre>
+<span class="cm">// Validador personalizado</span>
+<span class="kw">const</span> passwordFuerteValidator: <span class="tp">ValidatorFn</span> = (c) =>
+  <span class="op">/[A-Z]/</span>.<span class="fn">test</span>(c.value) && <span class="op">/[0-9]/</span>.<span class="fn">test</span>(c.value)
+    ? <span class="kw">null</span> : { passwordDebil: <span class="kw">true</span> };</pre>
+    </div>
   </div>
-</div>
 </section>
+<div class="divider"></div>
 
-<!-- HTTP -->
-<section id="http">
-<div class="container">
-  <div class="section-header"><div class="section-icon">🌐</div><div><h2>HttpClient — Peticiones HTTP</h2><p>CRUD, tipado genérico, interceptores y manejo de errores</p></div></div>
-  <div class="infograph">
-    <div class="infograph-title">🌐 Service con <span>CRUD completo y manejo de errores</span></div>
-    <pre><span class="dc">@Injectable</span>({ providedIn: <span class="st">'root'</span> })
-<span class="kw">export class</span> <span class="cl">ProductoService</span> {
-  <span class="kw">private</span> http = <span class="fn">inject</span>(<span class="cl">HttpClient</span>);
-  <span class="kw">private</span> url  = <span class="st">'https://api.ejemplo.com/productos'</span>;
+<!-- ═══════════════════════ HTTP ═══════════════════════ -->
+<section class="section" id="http">
+  <div class="section-header">
+    <div class="section-icon">🌐</div>
+    <div><h2>HttpClient — Peticiones HTTP</h2><p>CRUD, interceptores funcionales y el nuevo httpResource()</p></div>
+  </div>
 
-  <span class="fn">getAll</span>(params?: { pagina?: <span class="kw">number</span>; busqueda?: <span class="kw">string</span> }) {
-    <span class="kw">return</span> <span class="kw">this</span>.http.<span class="fn">get</span>&lt;<span class="cl">Producto</span>[]&gt;(<span class="kw">this</span>.url, { params }).<span class="fn">pipe</span>(
-      <span class="fn">shareReplay</span>(<span class="nm">1</span>),
-      <span class="fn">catchError</span>(<span class="kw">this</span>.<span class="fn">handleError</span>)
+  <div class="cards-grid cols2">
+    <div class="card">
+      <div class="card-header"><div class="card-icon ci-blue">HTTP</div><div><div class="card-title">Service con CRUD + interceptor</div></div></div>
+      <div class="card-body">
+        <pre><span class="dec">@Injectable</span>({ <span class="fn">providedIn</span>: <span class="str">'root'</span> })
+<span class="kw">export class</span> <span class="tp">ProductoService</span> {
+  <span class="kw">private</span> http = <span class="fn">inject</span>(<span class="tp">HttpClient</span>);
+  <span class="kw">private</span> url  = <span class="str">'https://api.ejemplo.com/productos'</span>;
+
+  <span class="fn">getAll</span>() {
+    <span class="kw">return this</span>.http.<span class="fn">get</span>&lt;<span class="tp">Producto</span>[]&gt;(<span class="kw">this</span>.url).<span class="fn">pipe</span>(
+      <span class="fn">shareReplay</span>(<span class="num">1</span>), <span class="fn">catchError</span>(<span class="kw">this</span>.handleError)
     );
   }
-
-  <span class="fn">create</span>(data: <span class="cl">Omit</span>&lt;<span class="cl">Producto</span>, <span class="st">'id'</span>&gt;) {
-    <span class="kw">return</span> <span class="kw">this</span>.http.<span class="fn">post</span>&lt;<span class="cl">Producto</span>&gt;(<span class="kw">this</span>.url, data);
+  <span class="fn">create</span>(data: <span class="tp">Omit</span>&lt;<span class="tp">Producto</span>, <span class="str">'id'</span>&gt;) {
+    <span class="kw">return this</span>.http.<span class="fn">post</span>&lt;<span class="tp">Producto</span>&gt;(<span class="kw">this</span>.url, data);
   }
-
-  <span class="fn">update</span>(id: <span class="kw">number</span>, data: <span class="cl">Partial</span>&lt;<span class="cl">Producto</span>&gt;) {
-    <span class="kw">return</span> <span class="kw">this</span>.http.<span class="fn">patch</span>&lt;<span class="cl">Producto</span>&gt;(<span class="st">`${this.url}/${id}`</span>, data);
+  <span class="fn">update</span>(id: <span class="tp">number</span>, data: <span class="tp">Partial</span>&lt;<span class="tp">Producto</span>&gt;) {
+    <span class="kw">return this</span>.http.<span class="fn">patch</span>&lt;<span class="tp">Producto</span>&gt;(<span class="str">`${this.url}/${id}`</span>, data);
   }
-
-  <span class="fn">delete</span>(id: <span class="kw">number</span>) {
-    <span class="kw">return</span> <span class="kw">this</span>.http.<span class="fn">delete</span>&lt;<span class="kw">void</span>&gt;(<span class="st">`${this.url}/${id}`</span>);
-  }
-
-  <span class="kw">private</span> <span class="fn">handleError</span>(err: <span class="cl">HttpErrorResponse</span>) {
-    <span class="kw">const</span> msg = err.status === <span class="nm">0</span>
-      ? <span class="st">'Error de red'</span>
-      : <span class="st">`Error ${err.status}: ${err.message}`</span>;
-    <span class="kw">return</span> <span class="fn">throwError</span>(() => <span class="kw">new</span> <span class="cl">Error</span>(msg));
+  <span class="fn">delete</span>(id: <span class="tp">number</span>) {
+    <span class="kw">return this</span>.http.<span class="fn">delete</span>&lt;<span class="kw">void</span>&gt;(<span class="str">`${this.url}/${id}`</span>);
   }
 }
 
-<span class="cm">// Interceptor moderno (función)</span>
-<span class="kw">export const</span> authInterceptor: <span class="cl">HttpInterceptorFn</span> = (req, next) => {
-  <span class="kw">const</span> token = <span class="fn">inject</span>(<span class="cl">AuthService</span>).<span class="fn">getToken</span>();
+<span class="cm">// Interceptor funcional (moderno)</span>
+<span class="kw">export const</span> authInterceptor: <span class="tp">HttpInterceptorFn</span> = (req, next) => {
+  <span class="kw">const</span> token = <span class="fn">inject</span>(<span class="tp">AuthService</span>).<span class="fn">getToken</span>();
   <span class="kw">if</span> (!token) <span class="kw">return</span> <span class="fn">next</span>(req);
-  <span class="kw">return</span> <span class="fn">next</span>(req.<span class="fn">clone</span>({ setHeaders: { Authorization: <span class="st">`Bearer ${token}`</span> } }));
+  <span class="kw">return</span> <span class="fn">next</span>(req.<span class="fn">clone</span>({
+    setHeaders: { Authorization: <span class="str">`Bearer ${token}`</span> }
+  }));
 };</pre>
-  </div>
-</div>
-</section>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-icon ci-pink">HR</div><div><div class="card-title">httpResource() — fetching reactivo</div><div class="card-subtitle">Experimental v21</div></div></div>
+      <div class="card-body">
+        <div class="card-tip"><span class="card-tip-icon">💡</span>Reemplaza el patrón ngOnInit + subscribe para carga reactiva a parámetros.</div>
+        <pre><span class="kw">export class</span> <span class="tp">ProductosComponent</span> {
+  page    = <span class="fn">signal</span>(<span class="num">1</span>);
+  search  = <span class="fn">signal</span>(<span class="str">''</span>);
 
-<!-- RXJS -->
-<section id="rxjs">
-<div class="container">
-  <div class="section-header"><div class="section-icon">🔄</div><div><h2>RxJS — Programación Reactiva</h2><p>Observables, operadores esenciales y patrones comunes en Angular</p></div></div>
-  <div class="infograph">
-    <div class="infograph-title">🔄 Operadores <span>RxJS</span> más usados</div>
-    <div class="ann-grid">
-      <div class="ann-group">
-        <div class="ann-group-title" style="color:var(--blue)">Transformación</div>
-        <div class="ann-item"><code>map()</code><span>Transforma cada valor emitido</span></div>
-        <div class="ann-item"><code>switchMap()</code><span>Cancela la anterior, usa la nueva</span></div>
-        <div class="ann-item"><code>mergeMap()</code><span>Ejecuta todas en paralelo</span></div>
-        <div class="ann-item"><code>concatMap()</code><span>En cola, una a la vez</span></div>
-        <div class="ann-item"><code>exhaustMap()</code><span>Ignora nuevas si hay una activa</span></div>
-      </div>
-      <div class="ann-group">
-        <div class="ann-group-title" style="color:var(--green)">Filtrado / Control</div>
-        <div class="ann-item"><code>filter()</code><span>Filtra por condición</span></div>
-        <div class="ann-item"><code>take(n)</code><span>Solo los primeros N valores</span></div>
-        <div class="ann-item"><code>takeUntil()</code><span>Hasta que otro Observable emita</span></div>
-        <div class="ann-item"><code>debounceTime()</code><span>Espera X ms sin actividad</span></div>
-        <div class="ann-item"><code>distinctUntilChanged()</code><span>Ignora valores iguales seguidos</span></div>
-      </div>
-      <div class="ann-group">
-        <div class="ann-group-title" style="color:var(--yellow)">Errores</div>
-        <div class="ann-item"><code>catchError()</code><span>Captura y reemplaza el error</span></div>
-        <div class="ann-item"><code>retry(n)</code><span>Reintenta N veces ante error</span></div>
-        <div class="ann-item"><code>throwError()</code><span>Crea observable de error</span></div>
-        <div class="ann-item"><code>EMPTY</code><span>Observable que completa sin emitir</span></div>
-      </div>
-      <div class="ann-group">
-        <div class="ann-group-title" style="color:var(--pink)">Utilidad</div>
-        <div class="ann-item"><code>tap()</code><span>Efecto secundario sin modificar</span></div>
-        <div class="ann-item"><code>finalize()</code><span>Corre al completar o en error</span></div>
-        <div class="ann-item"><code>shareReplay(1)</code><span>Cachea y comparte el último</span></div>
-        <div class="ann-item"><code>forkJoin()</code><span>Espera que todos completen</span></div>
+  <span class="cm">// Re-fetcha cuando page() o search() cambian</span>
+  <span class="cm">// Cancela la request anterior automáticamente</span>
+  products = <span class="fn">httpResource</span>(() => ({
+    url: <span class="str">'/api/products'</span>,
+    params: { page: <span class="kw">this</span>.<span class="fn">page</span>(), q: <span class="kw">this</span>.<span class="fn">search</span>() }
+  }), { defaultValue: [] });
+}
+
+<span class="cm">&lt;!-- Template con estados --&gt;</span>
+@<span class="kw">switch</span> (products.<span class="fn">status</span>()) {
+  @<span class="kw">case</span> (<span class="str">'loading'</span>)  { &lt;spinner /&gt; }
+  @<span class="kw">case</span> (<span class="str">'error'</span>)    { &lt;error-msg /&gt; }
+  @<span class="fn">default</span> {
+    @<span class="fn">for</span> (p <span class="kw">of</span> products.<span class="fn">value</span>(); track p.id) {
+      &lt;product-card [data]=<span class="str">"p"</span> /&gt;
+    }
+  }
+}</pre>
       </div>
     </div>
   </div>
-  <div class="infograph">
-    <div class="infograph-title">🔍 Buscador con <span>debounce + switchMap</span></div>
-    <pre><span class="kw">export class</span> <span class="cl">BuscadorComponent</span> {
-  <span class="kw">private</span> svc = <span class="fn">inject</span>(<span class="cl">ProductoService</span>);
+</section>
+<div class="divider"></div>
 
-  termino   = <span class="fn">signal</span>(<span class="st">''</span>);
+<!-- ═══════════════════════ RXJS ═══════════════════════ -->
+<section class="section" id="rxjs">
+  <div class="section-header">
+    <div class="section-icon">🔄</div>
+    <div><h2>RxJS — Programación Reactiva</h2><p>Observables, operadores esenciales y patrones comunes en Angular</p></div>
+  </div>
+
+  <div class="dir-cols" style="grid-template-columns: repeat(4,1fr);">
+    <div class="dir-group">
+      <div class="dir-group-head">Transformación</div>
+      <div class="dir-item"><code>map()</code><div class="dir-item-desc">Transforma cada valor</div></div>
+      <div class="dir-item"><code>switchMap()</code><div class="dir-item-desc">Cancela la anterior</div></div>
+      <div class="dir-item"><code>mergeMap()</code><div class="dir-item-desc">En paralelo</div></div>
+      <div class="dir-item"><code>concatMap()</code><div class="dir-item-desc">En cola, una a la vez</div></div>
+      <div class="dir-item"><code>exhaustMap()</code><div class="dir-item-desc">Ignora si hay activa</div></div>
+    </div>
+    <div class="dir-group">
+      <div class="dir-group-head">Filtrado / Control</div>
+      <div class="dir-item"><code>filter()</code><div class="dir-item-desc">Filtra por condición</div></div>
+      <div class="dir-item"><code>take(n)</code><div class="dir-item-desc">Primeros N valores</div></div>
+      <div class="dir-item"><code>debounceTime()</code><div class="dir-item-desc">Espera X ms</div></div>
+      <div class="dir-item"><code>distinctUntilChanged()</code><div class="dir-item-desc">Ignora iguales seguidos</div></div>
+      <div class="dir-item"><code>takeUntilDestroyed()</code><div class="dir-item-desc">Cleanup automático</div></div>
+    </div>
+    <div class="dir-group">
+      <div class="dir-group-head">Errores</div>
+      <div class="dir-item"><code>catchError()</code><div class="dir-item-desc">Captura y reemplaza</div></div>
+      <div class="dir-item"><code>retry(n)</code><div class="dir-item-desc">Reintenta N veces</div></div>
+      <div class="dir-item"><code>throwError()</code><div class="dir-item-desc">Observable de error</div></div>
+      <div class="dir-item"><code>EMPTY</code><div class="dir-item-desc">Completa sin emitir</div></div>
+    </div>
+    <div class="dir-group">
+      <div class="dir-group-head">Utilidad</div>
+      <div class="dir-item"><code>tap()</code><div class="dir-item-desc">Side effect sin modificar</div></div>
+      <div class="dir-item"><code>finalize()</code><div class="dir-item-desc">Al completar o error</div></div>
+      <div class="dir-item"><code>shareReplay(1)</code><div class="dir-item-desc">Cachea y comparte</div></div>
+      <div class="dir-item"><code>forkJoin()</code><div class="dir-item-desc">Espera todos completen</div></div>
+      <div class="dir-item"><code>toSignal()</code><div class="dir-item-desc">Observable → Signal</div></div>
+    </div>
+  </div>
+
+  <div class="full-card" style="margin-top:16px;">
+    <div class="full-card-head">🔍 Buscador con debounce + switchMap</div>
+    <div class="full-card-body">
+      <pre><span class="kw">export class</span> <span class="tp">BuscadorComponent</span> {
+  <span class="kw">private</span> svc = <span class="fn">inject</span>(<span class="tp">ProductoService</span>);
+  termino   = <span class="fn">signal</span>(<span class="str">''</span>);
   cargando  = <span class="fn">signal</span>(<span class="kw">false</span>);
-  errorMsg  = <span class="fn">signal</span>&lt;<span class="kw">string</span> | <span class="kw">null</span>&gt;(<span class="kw">null</span>);
 
   resultados = <span class="fn">toSignal</span>(
     <span class="fn">toObservable</span>(<span class="kw">this</span>.termino).<span class="fn">pipe</span>(
-      <span class="fn">debounceTime</span>(<span class="nm">300</span>),
+      <span class="fn">debounceTime</span>(<span class="num">300</span>),
       <span class="fn">distinctUntilChanged</span>(),
-      <span class="fn">filter</span>(q => q.<span class="fn">trim</span>().length >= <span class="nm">2</span>),
-      <span class="fn">tap</span>(() => { <span class="kw">this</span>.cargando.<span class="fn">set</span>(<span class="kw">true</span>); <span class="kw">this</span>.errorMsg.<span class="fn">set</span>(<span class="kw">null</span>); }),
+      <span class="fn">filter</span>(q => q.<span class="fn">trim</span>().length >= <span class="num">2</span>),
+      <span class="fn">tap</span>(() => <span class="kw">this</span>.cargando.<span class="fn">set</span>(<span class="kw">true</span>)),
       <span class="fn">switchMap</span>(q => <span class="kw">this</span>.svc.<span class="fn">buscar</span>(q).<span class="fn">pipe</span>(
-        <span class="fn">catchError</span>(e => { <span class="kw">this</span>.errorMsg.<span class="fn">set</span>(e.message); <span class="kw">return</span> <span class="fn">of</span>([]); })
+        <span class="fn">catchError</span>(() => <span class="fn">of</span>([]))
       )),
       <span class="fn">tap</span>(() => <span class="kw">this</span>.cargando.<span class="fn">set</span>(<span class="kw">false</span>))
     ),
     { initialValue: [] }
   );
 }</pre>
-  </div>
-</div>
-</section>
-
-<!-- LIFECYCLE -->
-<section id="lifecycle">
-<div class="container">
-  <div class="section-header"><div class="section-icon">🔁</div><div><h2>Lifecycle Hooks</h2><p>El ciclo de vida completo de un componente Angular</p></div></div>
-  <div class="infograph">
-    <div class="infograph-title">🔁 Ciclo de vida de un <span>componente</span></div>
-    <div class="lifecycle">
-      <div class="lc-step"><div class="lc-label">constructor</div><div class="lc-desc"><strong>Solo inyección de dependencias.</strong> Aquí va inject(). Nunca accedas al DOM ni hagas HTTP aquí.</div></div>
-      <div class="lc-step"><div class="lc-label">ngOnChanges</div><div class="lc-desc"><strong>Antes de ngOnInit y ante cada cambio de @Input.</strong> Recibe SimpleChanges con valores anteriores y nuevos.</div></div>
-      <div class="lc-step"><div class="lc-label">ngOnInit</div><div class="lc-desc"><strong>El más usado. Una sola vez tras inicializar @Inputs.</strong> Aquí va la lógica de arranque y peticiones HTTP iniciales.</div></div>
-      <div class="lc-step"><div class="lc-label">ngDoCheck</div><div class="lc-desc"><strong>Cada ciclo de detección de cambios.</strong> Muy costoso. Solo para detección manual en casos excepcionales.</div></div>
-      <div class="lc-step"><div class="lc-label">ngAfterContentInit</div><div class="lc-desc"><strong>Tras proyectar contenido con ng-content.</strong> Los @ContentChild están disponibles. Ejecuta una vez.</div></div>
-      <div class="lc-step"><div class="lc-label">ngAfterViewInit</div><div class="lc-desc"><strong>Tras renderizar la vista y componentes hijos.</strong> @ViewChild disponible. Interactúa con el DOM aquí.</div></div>
-      <div class="lc-step"><div class="lc-label">ngAfterViewChecked</div><div class="lc-desc"><strong>Tras cada verificación de vista.</strong> Muy costoso. Puede causar ExpressionChangedAfterItHasBeenChecked.</div></div>
-      <div class="lc-step"><div class="lc-label">ngOnDestroy</div><div class="lc-desc"><strong>Antes de destruir el componente.</strong> Desuscribe Observables, limpia timers y libera recursos para evitar memory leaks.</div></div>
     </div>
   </div>
-  <div class="infograph">
-    <div class="infograph-title">🧹 <span>DestroyRef</span> — evitar memory leaks (Angular 16+)</div>
-    <pre><span class="kw">export class</span> <span class="cl">MiComponent</span> {
-  <span class="kw">private</span> destroyRef = <span class="fn">inject</span>(<span class="cl">DestroyRef</span>);
+</section>
+<div class="divider"></div>
 
-  <span class="fn">ngOnInit</span>() {
-    <span class="cm">// takeUntilDestroyed — se desuscribe solo al destruir el componente</span>
-    interval(<span class="nm">1000</span>).<span class="fn">pipe</span>(
-      <span class="fn">takeUntilDestroyed</span>(<span class="kw">this</span>.destroyRef)
-    ).<span class="fn">subscribe</span>(n => <span class="bi">console</span>.<span class="fn">log</span>(n));
+<!-- ═══════════════════════ LIFECYCLE ═══════════════════════ -->
+<section class="section" id="lifecycle">
+  <div class="section-header">
+    <div class="section-icon">🔁</div>
+    <div><h2>Lifecycle Hooks</h2><p>Ciclo de vida completo de un componente Angular</p></div>
+  </div>
 
-    <span class="cm">// También funciona fuera de ngOnInit en Angular 16+</span>
-    <span class="kw">this</span>.destroyRef.<span class="fn">onDestroy</span>(() => {
-      <span class="bi">console</span>.<span class="fn">log</span>(<span class="st">'Componente destruido — limpiando recursos'</span>);
-    });
-  }
+  <div class="lc-steps">
+    <div class="lc-step"><div class="lc-left"><div class="lc-dot" style="background:#dd0031;color:#fff">1</div><div class="lc-line"></div></div><div class="lc-content"><div class="lc-name">constructor()</div><div class="lc-desc">Solo inyección de dependencias con inject(). Nunca accedas al DOM ni hagas HTTP aquí. Los @Input no están disponibles todavía.</div></div></div>
+    <div class="lc-step"><div class="lc-left"><div class="lc-dot" style="background:#e53935;color:#fff">2</div><div class="lc-line"></div></div><div class="lc-content"><div class="lc-name">ngOnChanges(changes)</div><div class="lc-desc">Antes de ngOnInit y ante cada cambio de @Input. Recibe SimpleChanges con valores anteriores y nuevos.</div></div></div>
+    <div class="lc-step"><div class="lc-left"><div class="lc-dot" style="background:#1976d2;color:#fff">3</div><div class="lc-line"></div></div><div class="lc-content"><div class="lc-name">ngOnInit()</div><div class="lc-desc">✅ El más usado. Una sola vez tras inicializar @Inputs. Aquí va la lógica de arranque y peticiones HTTP iniciales.</div></div></div>
+    <div class="lc-step"><div class="lc-left"><div class="lc-dot" style="background:#0288d1;color:#fff">4</div><div class="lc-line"></div></div><div class="lc-content"><div class="lc-name">ngDoCheck()</div><div class="lc-desc">Cada ciclo de detección de cambios. Muy costoso. Solo para detección manual en casos excepcionales.</div></div></div>
+    <div class="lc-step"><div class="lc-left"><div class="lc-dot" style="background:#7c3aed;color:#fff">5</div><div class="lc-line"></div></div><div class="lc-content"><div class="lc-name">ngAfterContentInit()</div><div class="lc-desc">Tras proyectar contenido con ng-content. Los @ContentChild están disponibles. Se ejecuta una vez.</div></div></div>
+    <div class="lc-step"><div class="lc-left"><div class="lc-dot" style="background:#0d9488;color:#fff">6</div><div class="lc-line"></div></div><div class="lc-content"><div class="lc-name">ngAfterViewInit()</div><div class="lc-desc">✅ Tras renderizar la vista y componentes hijos. @ViewChild disponible. Interactúa con el DOM aquí.</div></div></div>
+    <div class="lc-step"><div class="lc-left"><div class="lc-dot" style="background:#d97706;color:#fff">7</div><div class="lc-line"></div></div><div class="lc-content"><div class="lc-name">ngAfterViewChecked()</div><div class="lc-desc">Tras cada verificación de vista. Muy costoso. Puede causar ExpressionChangedAfterItHasBeenChecked.</div></div></div>
+    <div class="lc-step"><div class="lc-left"><div class="lc-dot" style="background:#dc2626;color:#fff">X</div></div><div class="lc-content"><div class="lc-name">ngOnDestroy()</div><div class="lc-desc">✅ Antes de destruir. Desuscribe Observables, limpia timers. Usa DestroyRef / takeUntilDestroyed() en código moderno.</div></div></div>
+  </div>
+</section>
+<div class="divider"></div>
+
+<!-- ═══════════════════════ SSR ═══════════════════════ -->
+<section class="section" id="ssr">
+  <div class="section-header">
+    <div class="section-icon">🌍</div>
+    <div><h2>SSR, SSG & Hydration</h2><p>Server-Side Rendering, Static Site Generation y Partial Hydration</p></div>
+  </div>
+
+  <div class="ssr-grid">
+    <div class="ssr-col yes">
+      <div class="ssr-col-label">✅ Usa SSR cuando...</div>
+      <div class="ssr-item">App pública / e-commerce / blog</div>
+      <div class="ssr-item">SEO es crítico para el negocio</div>
+      <div class="ssr-item">Core Web Vitals son KPI</div>
+      <div class="ssr-item">Primer render rápido importa</div>
+      <div class="ssr-item">Redes lentas / dispositivos móviles</div>
+      <div class="ssr-item">Landing pages / marketing</div>
+    </div>
+    <div class="ssr-col no">
+      <div class="ssr-col-label">❌ No necesitas SSR si...</div>
+      <div class="ssr-item">Backoffice / admin / dashboard</div>
+      <div class="ssr-item">Detrás de login (no indexable)</div>
+      <div class="ssr-item">Datos 100% dinámicos por usuario</div>
+      <div class="ssr-item">Equipo pequeño (+ complejidad)</div>
+      <div class="ssr-item">Herramienta interna / B2B SaaS</div>
+      <div class="ssr-item">App de análisis de datos</div>
+    </div>
+  </div>
+
+  <div class="full-card" style="margin-top: 16px;">
+    <div class="full-card-head">🌍 Activar SSR con Hydration completa</div>
+    <div class="full-card-body">
+      <pre>ng new mi-app --ssr  <span class="cm">// genera con SSR</span>
+
+<span class="cm">// app.config.ts</span>
+<span class="fn">provideClientHydration</span>(<span class="fn">withHttpTransferCache</span>()),
+<span class="cm">// withHttpTransferCache: evita doble fetch cliente/servidor</span>
+
+<span class="cm">// Partial hydration con @defer (lo mejor de ambos mundos)</span>
+@<span class="fn">defer</span> (<span class="fn">on viewport</span>) {
+  &lt;heavy-chart /&gt; <span class="cm">// NO hidrata hasta entrar al viewport</span>
+}
+@<span class="fn">defer</span> (<span class="fn">on idle</span>) {
+  &lt;footer-heavy /&gt; <span class="cm">// cuando el browser está ocioso</span>
+}</pre>
+    </div>
+  </div>
+  <div class="info-box"><strong>Regla híbrida Angular 21:</strong> SSR + <code>@defer (on viewport)</code> = primer HTML rápido del servidor + componentes pesados cargan lazy. Activa siempre <code>withHttpTransferCache()</code>.</div>
+</section>
+<div class="divider"></div>
+
+<!-- ═══════════════════════ CHANGE DETECTION ═══════════════════════ -->
+<section class="section" id="cd">
+  <div class="section-header">
+    <div class="section-icon">⚙️</div>
+    <div><h2>Change Detection — Evolución</h2><p>De Zone.js + Default hasta Zoneless + Signals en Angular 21</p></div>
+  </div>
+
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-left"><div class="tl-dot"></div><div class="tl-line"></div></div>
+      <div class="tl-content">
+        <div class="tl-version">Zone.js + Default</div>
+        <div class="tl-desc">Zone intercepta TODOS los eventos (setTimeout, Promises, DOM events). CD en todo el árbol. 100 componentes = 100 revisiones. Bundle +40KB de zone.js.</div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-left"><div class="tl-dot"></div><div class="tl-line"></div></div>
+      <div class="tl-content">
+        <div class="tl-version">Zone.js + OnPush</div>
+        <div class="tl-desc">Solo revisa cuando @Input cambia por referencia, un Signal emite, o async pipe emite. Mucho más eficiente. El estándar recomendado antes de v21.</div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-left"><div class="tl-dot current"></div></div>
+      <div class="tl-content">
+        <div class="tl-badge">Default Angular 21</div>
+        <div class="tl-version">Zoneless + Signals</div>
+        <div class="tl-desc">Sin Zone.js. CD solo cuando un Signal cambia. Bundle más pequeño. Solo los componentes afectados se actualizan. Más predecible y debuggeable. Default en proyectos nuevos v21.</div>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="divider"></div>
+
+<!-- ═══════════════════════ DI AVANZADO ═══════════════════════ -->
+<section class="section" id="di">
+  <div class="section-header">
+    <div class="section-icon">💉</div>
+    <div><h2>DI Avanzado — Jerarquía</h2><p>El árbol de injectors de Angular y cómo Angular resuelve dependencias</p></div>
+  </div>
+
+  <div class="lc-steps" style="margin: 20px 0;">
+    <div class="lc-step"><div class="lc-left"><div class="lc-dot" style="background:#dd0031;color:#fff;font-size:9px;">RT</div><div class="lc-line"></div></div><div class="lc-content"><div class="lc-name">Root Injector</div><div class="lc-desc"><code>providedIn: 'root'</code> — Singleton global. Una instancia para toda la app.</div></div></div>
+    <div class="lc-step"><div class="lc-left"><div class="lc-dot" style="background:#1976d2;color:#fff;font-size:9px;">PL</div><div class="lc-line"></div></div><div class="lc-content"><div class="lc-name">Platform Injector</div><div class="lc-desc">Servicios del platform (PlatformRef). Raro usarlo directamente.</div></div></div>
+    <div class="lc-step"><div class="lc-left"><div class="lc-dot" style="background:#0d9488;color:#fff;font-size:9px;">ENV</div><div class="lc-line"></div></div><div class="lc-content"><div class="lc-name">Environment Injector</div><div class="lc-desc">Route-level. Nueva instancia por ruta lazy. Ideal para servicios de feature aislados.</div></div></div>
+    <div class="lc-step"><div class="lc-left"><div class="lc-dot" style="background:#7c3aed;color:#fff;font-size:9px;">CMP</div><div class="lc-line"></div></div><div class="lc-content"><div class="lc-name">Component Injector</div><div class="lc-desc"><code>providers:[]</code> en @Component. Nueva instancia por componente y sus hijos.</div></div></div>
+    <div class="lc-step"><div class="lc-left"><div class="lc-dot" style="background:#d97706;color:#fff;font-size:9px;">CH</div></div><div class="lc-content"><div class="lc-name">Child Component Injector</div><div class="lc-desc">Hereda del padre. Si no encuentra el servicio, sube en la jerarquía hasta el Root.</div></div></div>
+  </div>
+  <div class="info-box">Angular busca el servicio <strong>de hijo a padre</strong>. Si llega al Root sin encontrarlo → error de runtime. Usa <code>inject(Service, &#123;optional: true&#125;)</code> para servicios opcionales.</div>
+</section>
+<div class="divider"></div>
+
+<!-- ═══════════════════════ ESTRUCTURA ═══════════════════════ -->
+<section class="section" id="estructura">
+  <div class="section-header">
+    <div class="section-icon">📁</div>
+    <div><h2>Estructura de Proyecto</h2><p>Cómo organizar una app Angular profesional con Core/Shared/Features</p></div>
+  </div>
+
+  <div class="tree">
+<span class="dir">src/</span>
+├── main.ts              <span class="comment">← bootstrapApplication() con providers</span>
+├── index.html
+├── styles.css           <span class="comment">← estilos globales</span>
+│
+└── <span class="dir">app/</span>
+    ├── app.component.ts   <span class="comment">← root con &lt;router-outlet&gt;</span>
+    ├── app.routes.ts      <span class="comment">← rutas raíz con lazy loading</span>
+    ├── app.config.ts      <span class="comment">← ApplicationConfig con todos los providers</span>
+    │
+    ├── <span class="dir">core/</span>            <span class="comment">← singletons: una sola instancia global</span>
+    │   ├── <span class="dir">services/</span>
+    │   │   ├── auth.service.ts
+    │   │   └── theme.service.ts
+    │   ├── <span class="dir">interceptors/</span>
+    │   │   └── auth.interceptor.ts
+    │   ├── <span class="dir">guards/</span>
+    │   │   └── auth.guard.ts
+    │   └── <span class="dir">models/</span>
+    │       └── user.model.ts
+    │
+    ├── <span class="dir">shared/</span>          <span class="comment">← componentes, pipes y directivas reutilizables</span>
+    │   ├── <span class="dir">components/</span>
+    │   │   ├── <span class="dir">button/</span>
+    │   │   └── <span class="dir">modal/</span>
+    │   ├── <span class="dir">pipes/</span>
+    │   │   └── truncar.pipe.ts
+    │   └── <span class="dir">directives/</span>
+    │       └── resaltar.directive.ts
+    │
+    └── <span class="dir">features/</span>        <span class="comment">← features con lazy loading</span>
+        ├── <span class="dir">usuarios/</span>
+        │   ├── usuarios.routes.ts
+        │   ├── <span class="dir">components/</span>
+        │   ├── <span class="dir">services/</span>
+        │   └── <span class="dir">models/</span>
+        └── <span class="dir">productos/</span>
+  </div>
+</section>
+<div class="divider"></div>
+
+<!-- ═══════════════════════ PERFORMANCE ═══════════════════════ -->
+<section class="section" id="performance">
+  <div class="section-header">
+    <div class="section-icon">🚀</div>
+    <div><h2>Performance — Checklist Angular 21</h2><p>Bundle size, runtime performance y anti-patrones</p></div>
+  </div>
+
+  <div class="checklist-grid">
+    <div class="cl-box">
+      <div class="cl-title">📦 Bundle size</div>
+      <div class="cl-item"><span class="ok">✓</span>Zoneless — sin zone.js en el bundle</div>
+      <div class="cl-item"><span class="ok">✓</span>Lazy loading por ruta con loadComponent</div>
+      <div class="cl-item"><span class="ok">✓</span>@defer para componentes pesados</div>
+      <div class="cl-item"><span class="ok">✓</span>Tree-shaking automático (esbuild + Vite)</div>
+      <div class="cl-item"><span class="ok">✓</span>Standalone components (sin NgModule)</div>
+    </div>
+    <div class="cl-box">
+      <div class="cl-title">⚡ Runtime</div>
+      <div class="cl-item"><span class="ok">✓</span>ChangeDetection.OnPush en todos los componentes</div>
+      <div class="cl-item"><span class="ok">✓</span>track en @for — siempre con el id único</div>
+      <div class="cl-item"><span class="ok">✓</span>NgOptimizedImage + priority en LCP</div>
+      <div class="cl-item"><span class="ok">✓</span>withHttpTransferCache() en SSR</div>
+      <div class="cl-item"><span class="ok">✓</span>Pure pipes (son default, no uses impure)</div>
+    </div>
+    <div class="cl-box">
+      <div class="cl-title">🛠️ Developer Experience</div>
+      <div class="cl-item"><span class="ok">✓</span>Angular CLI + Vite + esbuild</div>
+      <div class="cl-item"><span class="ok">✓</span>Vitest para tests (default v21)</div>
+      <div class="cl-item"><span class="ok">✓</span>MCP Server para generación AI</div>
+      <div class="cl-item"><span class="ok">✓</span>Angular DevTools en Chrome</div>
+      <div class="cl-item"><span class="ok">✓</span>withComponentInputBinding en Router</div>
+    </div>
+    <div class="cl-box danger">
+      <div class="cl-title">🚨 Anti-patrones</div>
+      <div class="cl-item"><span class="bad">✗</span>subscribe() sin unsubscribe / takeUntilDestroyed</div>
+      <div class="cl-item"><span class="bad">✗</span>@Input sin OnPush — todo se re-renderiza</div>
+      <div class="cl-item"><span class="bad">✗</span>@for sin track — O(n²) en listas grandes</div>
+      <div class="cl-item"><span class="bad">✗</span>Impure pipes innecesarios — corren siempre</div>
+      <div class="cl-item"><span class="bad">✗</span>setTimeout sin signals en modo zoneless</div>
+    </div>
+  </div>
+</section>
+<div class="divider"></div>
+
+<!-- ═══════════════════════ ECOSISTEMA ═══════════════════════ -->
+<section class="section" id="librerias">
+  <div class="section-header">
+    <div class="section-icon">🛠️</div>
+    <div><h2>Ecosistema de Herramientas</h2><p>Las librerías más importantes del mundo Angular</p></div>
+  </div>
+
+  <div class="eco-grid">
+    <div class="eco-card"><div class="eco-name">Angular Material <span class="eco-cat" style="background:rgba(79,195,247,.12);color:var(--blue);">UI</span></div><div class="eco-desc">Biblioteca UI oficial (Material Design 3). Totalmente accesible. Theming con CSS custom properties.</div></div>
+    <div class="eco-card"><div class="eco-name">Angular CDK <span class="eco-cat" style="background:rgba(79,195,247,.12);color:var(--blue);">UI</span></div><div class="eco-desc">Drag & drop, virtual scrolling, overlays, portals, accessibility primitives. Base de Angular Material.</div></div>
+    <div class="eco-card"><div class="eco-name">Angular Aria ✨ <span class="eco-cat" style="background:rgba(74,222,128,.1);color:var(--green);">NEW</span></div><div class="eco-desc">Componentes headless accesibles. 13 patterns sin estilos. Signals-based. Dev Preview en v21.</div></div>
+    <div class="eco-card"><div class="eco-name">NgRx SignalStore <span class="eco-cat" style="background:rgba(192,132,252,.1);color:var(--purple);">State</span></div><div class="eco-desc">State management moderno con Signals. Mucho menos boilerplate que NgRx clásico. Futuro del estado.</div></div>
+    <div class="eco-card"><div class="eco-name">NgRx Store + Effects <span class="eco-cat" style="background:rgba(192,132,252,.1);color:var(--purple);">State</span></div><div class="eco-desc">State management estilo Redux. Para enterprise con lógica compleja. Actions, Reducers, Effects.</div></div>
+    <div class="eco-card"><div class="eco-name">TanStack Query <span class="eco-cat" style="background:rgba(251,191,36,.1);color:var(--yellow);">HTTP</span></div><div class="eco-desc">Caché de peticiones, estados loading/error, revalidación. Complementa a httpResource().</div></div>
+    <div class="eco-card"><div class="eco-name">Angular Fire <span class="eco-cat" style="background:rgba(251,146,60,.1);color:var(--orange);">BaaS</span></div><div class="eco-desc">Integración oficial con Firebase. Auth, Firestore, Storage. Ideal para prototipos.</div></div>
+    <div class="eco-card"><div class="eco-name">PrimeNG <span class="eco-cat" style="background:rgba(79,195,247,.12);color:var(--blue);">UI</span></div><div class="eco-desc">Suite completa de componentes UI. Tablas avanzadas, charts, tree, calendar, scheduler.</div></div>
+    <div class="eco-card"><div class="eco-name">Tailwind CSS <span class="eco-cat" style="background:rgba(45,212,191,.1);color:var(--teal);">CSS</span></div><div class="eco-desc">Utility-first CSS. Compatible con Angular v21 con soporte oficial. Fácil de configurar.</div></div>
+    <div class="eco-card"><div class="eco-name">Transloco <span class="eco-cat" style="background:rgba(74,222,128,.1);color:var(--green);">i18n</span></div><div class="eco-desc">Internacionalización moderna. Lazy loading de traducciones, múltiples idiomas simultáneos.</div></div>
+    <div class="eco-card"><div class="eco-name">Nx (Nrwl) <span class="eco-cat" style="background:rgba(107,114,128,.15);color:var(--text3);">Mono</span></div><div class="eco-desc">Monorepo tools. Código compartido entre múltiples apps. Grafo de dependencias. Enterprise.</div></div>
+    <div class="eco-card"><div class="eco-name">Vitest ✨ <span class="eco-cat" style="background:rgba(74,222,128,.1);color:var(--green);">NEW</span></div><div class="eco-desc">Test runner default en Angular 21. Reemplaza Karma. Más rápido, fake timers, snapshots.</div></div>
+  </div>
+</section>
+<div class="divider"></div>
+
+<!-- ═══════════════════════ COMPARATIVAS ═══════════════════════ -->
+<section class="section" id="comparativa">
+  <div class="section-header">
+    <div class="section-icon">⚖️</div>
+    <div><h2>Comparativas VS</h2><p>Cuándo usar qué — decisiones directas y al grano</p></div>
+  </div>
+
+  <div class="vs-grid">
+    <div class="vs-card">
+      <div class="vs-title">Estado del componente</div>
+      <div class="vs-row">
+        <div class="vs-side win"><div class="vs-side-name">✅ Signals</div><div class="vs-side-desc">Simple, sin subscribe. Reactivo en template. Zoneless-ready. computed memoizado. El futuro.</div></div>
+        <div class="vs-divider">VS</div>
+        <div class="vs-side"><div class="vs-side-name">RxJS BehaviorSubject</div><div class="vs-side-desc">Verboso. Hay que gestionar unsubscribe. Potente para streams complejos.</div></div>
+      </div>
+      <div class="verdict"><strong>Usar ahora:</strong> Signals para estado local/derivado. RxJS para HTTP, websockets y streams complejos encadenados.</div>
+    </div>
+
+    <div class="vs-card">
+      <div class="vs-title">Formularios en Angular 21</div>
+      <div class="vs-row">
+        <div class="vs-side win"><div class="vs-side-name">✅ Signal Forms (v21)</div><div class="vs-side-desc">Experimental. Sin boilerplate. Full type-safe. Model = signal. Combina TD + RF.</div></div>
+        <div class="vs-divider">VS</div>
+        <div class="vs-side"><div class="vs-side-name">Reactive Forms</div><div class="vs-side-desc">Estable y maduro. FormGroup/FormControl con TypedForms. Enterprise-ready.</div></div>
+      </div>
+      <div class="verdict"><strong>Usar ahora:</strong> Signal Forms en proyectos nuevos que aceptan experimental. Reactive Forms en producción estable.</div>
+    </div>
+
+    <div class="vs-card">
+      <div class="vs-title">Carga de datos HTTP</div>
+      <div class="vs-row">
+        <div class="vs-side win"><div class="vs-side-name">✅ httpResource()</div><div class="vs-side-desc">Reactivo a signals. Auto-cancela. Estados como signals. Sin subscribe. Experimental v21.</div></div>
+        <div class="vs-divider">VS</div>
+        <div class="vs-side"><div class="vs-side-name">HttpClient + subscribe</div><div class="vs-side-desc">Clásico y estable. Control total con RxJS. Interceptores sin problemas.</div></div>
+      </div>
+      <div class="verdict"><strong>Usar ahora:</strong> httpResource() para fetching reactivo. HttpClient directo para lógica RxJS avanzada o interceptores.</div>
+    </div>
+
+    <div class="vs-card">
+      <div class="vs-title">Estado global</div>
+      <div class="vs-row">
+        <div class="vs-side win"><div class="vs-side-name">✅ NgRx SignalStore</div><div class="vs-side-desc">Poco boilerplate. Composable. Signals-based. Moderno. Proyectos nuevos.</div></div>
+        <div class="vs-divider">VS</div>
+        <div class="vs-side"><div class="vs-side-name">NgRx Clásico</div><div class="vs-side-desc">Actions + Reducers + Effects. Más boilerplate. Muy predecible en equipos grandes.</div></div>
+      </div>
+      <div class="verdict"><strong>Usar ahora:</strong> NgRx SignalStore en nuevos. Para estado simple: Signals en servicio con providedIn:'root'. NgRx clásico si ya existe.</div>
+    </div>
+
+    <div class="vs-card">
+      <div class="vs-title">Test runner</div>
+      <div class="vs-row">
+        <div class="vs-side win"><div class="vs-side-name">✅ Vitest (v21 default)</div><div class="vs-side-desc">Rápido. Fake timers. Snapshots. Paralelización. DX moderna.</div></div>
+        <div class="vs-divider">VS</div>
+        <div class="vs-side"><div class="vs-side-name">Karma / Jasmine</div><div class="vs-side-desc">Legacy. Más lento. Sigue soportado pero no es el default en v21.</div></div>
+      </div>
+      <div class="verdict"><strong>Usar ahora:</strong> Vitest en proyectos nuevos. No hay urgencia de migrar proyectos Karma existentes.</div>
+    </div>
+
+    <div class="vs-card">
+      <div class="vs-title">Change Detection</div>
+      <div class="vs-row">
+        <div class="vs-side win"><div class="vs-side-name">✅ Zoneless + Signals</div><div class="vs-side-desc">Default v21. Sin Zone.js. Bundle más pequeño. CD solo cuando Signal cambia.</div></div>
+        <div class="vs-divider">VS</div>
+        <div class="vs-side"><div class="vs-side-name">Zone.js + OnPush</div><div class="vs-side-desc">Clásico. Paso intermedio de migración hacia zoneless.</div></div>
+      </div>
+      <div class="verdict"><strong>Usar ahora:</strong> Zoneless en proyectos nuevos v21. OnPush + Signals en proyectos existentes antes de migrar.</div>
+    </div>
+
+    <div class="vs-card">
+      <div class="vs-title">Renderizado</div>
+      <div class="vs-row">
+        <div class="vs-side"><div class="vs-side-name">SSR + Hydration</div><div class="vs-side-desc">HTML en servidor. SEO óptimo. FCP rápido. Requiere servidor Node.</div></div>
+        <div class="vs-divider">VS</div>
+        <div class="vs-side"><div class="vs-side-name">CSR (SPA clásica)</div><div class="vs-side-desc">Simple, solo estático. SEO limitado. Ideal para apps internas.</div></div>
+      </div>
+      <div class="verdict"><strong>Regla:</strong> SEO importa → SSR. App interna → CSR. Máximo performance → SSR + @defer (partial hydration).</div>
+    </div>
+
+    <div class="vs-card">
+      <div class="vs-title">Componentes accesibles</div>
+      <div class="vs-row">
+        <div class="vs-side win"><div class="vs-side-name">✅ Angular Aria (headless)</div><div class="vs-side-desc">Sin estilos. Tu design system. Signals-based. Accesibilidad correcta desde el inicio.</div></div>
+        <div class="vs-divider">VS</div>
+        <div class="vs-side"><div class="vs-side-name">Angular Material</div><div class="vs-side-desc">Material Design listo. Estable. No lo reemplaza Angular Aria — son complementarios.</div></div>
+      </div>
+      <div class="verdict"><strong>Usar ahora:</strong> Angular Aria para design systems custom. Angular Material para Material Design listo. Son complementarios.</div>
+    </div>
+
+    <div class="vs-card">
+      <div class="vs-title">Animaciones</div>
+      <div class="vs-row">
+        <div class="vs-side win"><div class="vs-side-name">✅ animate.enter/leave (v21)</div><div class="vs-side-desc">Directo en template. Declarativo. Sin imports complejos. Fade-in/out simples.</div></div>
+        <div class="vs-divider">VS</div>
+        <div class="vs-side"><div class="vs-side-name">@angular/animations DSL</div><div class="vs-side-desc">Potente. State machines. Keyframes JS. Para animaciones con estados múltiples.</div></div>
+      </div>
+      <div class="verdict"><strong>Usar ahora:</strong> animate.enter/leave para transiciones simples. DSL para animaciones con estados múltiples o lógica compleja.</div>
+    </div>
+
+    <div class="vs-card">
+      <div class="vs-title">Angular vs React vs Vue</div>
+      <div style="overflow-x:auto;margin-top:10px;">
+        <table>
+          <thead><tr><th>Criterio</th><th>Angular 21</th><th>React</th><th>Vue 3</th></tr></thead>
+          <tbody>
+            <tr><td>Tipo</td><td>Framework completo</td><td>Librería UI</td><td>Framework progresivo</td></tr>
+            <tr><td>TypeScript</td><td>✅ Obligatorio</td><td>Opcional</td><td>Excelente soporte</td></tr>
+            <tr><td>Todo incluido</td><td>✅ Router,HTTP,Forms,DI</td><td>❌ Eliges librerías</td><td>Casi todo incluido</td></tr>
+            <tr><td>Curva aprendizaje</td><td>Alta (TS, DI, RxJS)</td><td>Media</td><td>Baja</td></tr>
+            <tr><td>Reactividad</td><td>✅ Signals + Zoneless</td><td>useState / hooks</td><td>✅ Composition API</td></tr>
+            <tr><td>Enterprise</td><td>✅ Dominante</td><td>✅ Muy fuerte</td><td>Fuerte en Asia</td></tr>
+            <tr><td>Mantenedor</td><td>Google</td><td>Meta</td><td>Comunidad (Evan You)</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="verdict" style="margin-top:10px;"><strong>Regla de oro:</strong> Angular brilla en equipos grandes donde la consistencia y estructura son clave. React cuando la flexibilidad importa. Vue para rapidez y curva suave.</div>
+    </div>
+  </div>
+
+  <!-- EVOLUCIÓN ANGULAR -->
+  <div class="full-card" style="margin-top: 24px;">
+    <div class="full-card-head">📅 Evolución de Angular — versiones clave</div>
+    <div class="full-card-body">
+      <div class="timeline">
+        <div class="tl-item"><div class="tl-left"><div class="tl-dot"></div><div class="tl-line"></div></div><div class="tl-content"><div class="tl-version">Angular 2 (2016)</div><div class="tl-desc">Reescritura total. TypeScript, componentes, DI jerárquico. Ruptura con AngularJS (1.x).</div></div></div>
+        <div class="tl-item"><div class="tl-left"><div class="tl-dot"></div><div class="tl-line"></div></div><div class="tl-content"><div class="tl-version">Angular 9 (2020)</div><div class="tl-desc">Ivy compiler por defecto. Bundles más pequeños, mejor debugging y tree-shaking.</div></div></div>
+        <div class="tl-item"><div class="tl-left"><div class="tl-dot"></div><div class="tl-line"></div></div><div class="tl-content"><div class="tl-version">Angular 14 (2022)</div><div class="tl-desc">Standalone Components. inject() function. Typed Reactive Forms. Inicio del Angular moderno.</div></div></div>
+        <div class="tl-item"><div class="tl-left"><div class="tl-dot"></div><div class="tl-line"></div></div><div class="tl-content"><div class="tl-version">Angular 16 (2023)</div><div class="tl-desc">Signals en developer preview. Required inputs. SSR mejorado. takeUntilDestroyed(). DestroyRef.</div></div></div>
+        <div class="tl-item"><div class="tl-left"><div class="tl-dot"></div><div class="tl-line"></div></div><div class="tl-content"><div class="tl-version">Angular 17 (2023)</div><div class="tl-desc">Nueva sintaxis @if/@for/@switch. @defer. Signals estables. Standalone por defecto. Nueva angular.dev.</div></div></div>
+        <div class="tl-item"><div class="tl-left"><div class="tl-dot"></div><div class="tl-line"></div></div><div class="tl-content"><div class="tl-version">Angular 18–19 (2024)</div><div class="tl-desc">Signal inputs/outputs. Zoneless experimental. HMR mejorado. Material 3 estable. httpResource.</div></div></div>
+        <div class="tl-item"><div class="tl-left"><div class="tl-dot current"></div></div><div class="tl-content"><div class="tl-badge">Actual</div><div class="tl-version">Angular 21 (Nov 2025)</div><div class="tl-desc">Signal Forms. Zoneless default. Angular Aria dev preview. Vitest default. MCP Server AI. animate.enter/leave. linkedSignal estable.</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="footer-logo">
+    <div class="logo-badge" style="width:24px;height:24px;font-size:12px;">A</div>
+    Angular 21 · Guía Definitiva
+  </div>
+  <div class="footer-flow">Component <span>→</span> Service <span>→</span> Signal <span>→</span> Router <span>→</span> HTTP <span>→</span> DOM</div>
+  <div style="font-size:11px;color:var(--text3);">v21.2.5 · angular.dev · Nov 2025</div>
+</div>
+
+</main>
+</div>
+
+<script>
+// Scrollspy
+const sections = document.querySelectorAll('section[id]');
+const navItems = document.querySelectorAll('.nav-item');
+const main = document.getElementById('main');
+
+function updateSpy() {
+  let current = '';
+  sections.forEach(section => {
+    const top = section.offsetTop - 100;
+    if (main.scrollTop >= top) current = section.id;
+  });
+  navItems.forEach(item => {
+    item.classList.remove('spy-active');
+    if (item.getAttribute('href') === '#' + current) {
+      item.classList.add('spy-active');
+    }
+  });
 }
 
-<span class="cm">// Alternativa: takeUntilDestroyed() en el campo de clase (Angular 16.1+)</span>
-<span class="kw">export class</span> <span class="cl">Moderno</span> {
-  datos$ = <span class="fn">inject</span>(<span class="cl">DataService</span>).<span class="fn">stream</span>().<span class="fn">pipe</span>(
-    <span class="fn">takeUntilDestroyed</span>()  <span class="cm">// sin argumento: usa el DestroyRef del contexto</span>
-  );
-}</pre>
-  </div>
-</div>
-</section>
+main.addEventListener('scroll', updateSpy);
+updateSpy();
 
-<!-- ESTRUCTURA -->
-<section id="estructura">
-<div class="container">
-  <div class="section-header"><div class="section-icon">📁</div><div><h2>Estructura de Proyecto</h2><p>Cómo organizar una app Angular profesional con Core/Shared/Features</p></div></div>
-  <div class="infograph">
-    <div class="infograph-title">🗂️ Estructura <span>recomendada</span> Angular moderno</div>
-    <div class="folder-tree">
-      <div class="ft-row"><span class="ft-tree">   </span><span class="dir">src/</span></div>
-      <div class="ft-row"><span class="ft-tree">├──</span><span class="file"> main.ts</span><span class="note">                  ← bootstrapApplication() con providers</span></div>
-      <div class="ft-row"><span class="ft-tree">├──</span><span class="file"> index.html</span></div>
-      <div class="ft-row"><span class="ft-tree">├──</span><span class="yml"> styles.css</span><span class="note">               ← estilos globales</span></div>
-      <div class="ft-row"><span class="ft-tree">│</span></div>
-      <div class="ft-row"><span class="ft-tree">└──</span><span class="dir"> app/</span></div>
-      <div class="ft-row"><span class="ft-tree">    ├──</span><span class="file"> app.component.ts</span><span class="note">     ← root con &lt;router-outlet&gt;</span></div>
-      <div class="ft-row"><span class="ft-tree">    ├──</span><span class="file"> app.routes.ts</span><span class="note">        ← rutas raíz con lazy loading</span></div>
-      <div class="ft-row"><span class="ft-tree">    ├──</span><span class="file"> app.config.ts</span><span class="note">        ← ApplicationConfig con todos los providers</span></div>
-      <div class="ft-row"><span class="ft-tree">    │</span></div>
-      <div class="ft-row"><span class="ft-tree">    ├──</span><span class="dir"> core/</span><span class="note">                ← singletons: una sola instancia</span></div>
-      <div class="ft-row"><span class="ft-tree">    │   ├──</span><span class="dir"> services/</span></div>
-      <div class="ft-row"><span class="ft-tree">    │   │   ├──</span><span class="file"> auth.service.ts</span></div>
-      <div class="ft-row"><span class="ft-tree">    │   │   └──</span><span class="file"> theme.service.ts</span></div>
-      <div class="ft-row"><span class="ft-tree">    │   ├──</span><span class="dir"> interceptors/</span></div>
-      <div class="ft-row"><span class="ft-tree">    │   │   └──</span><span class="file"> auth.interceptor.ts</span></div>
-      <div class="ft-row"><span class="ft-tree">    │   ├──</span><span class="dir"> guards/</span></div>
-      <div class="ft-row"><span class="ft-tree">    │   │   └──</span><span class="file"> auth.guard.ts</span></div>
-      <div class="ft-row"><span class="ft-tree">    │   └──</span><span class="dir"> models/</span></div>
-      <div class="ft-row"><span class="ft-tree">    │       └──</span><span class="file"> user.model.ts</span></div>
-      <div class="ft-row"><span class="ft-tree">    │</span></div>
-      <div class="ft-row"><span class="ft-tree">    ├──</span><span class="dir"> shared/</span><span class="note">              ← componentes, pipes y directivas reutilizables</span></div>
-      <div class="ft-row"><span class="ft-tree">    │   ├──</span><span class="dir"> components/</span></div>
-      <div class="ft-row"><span class="ft-tree">    │   │   ├──</span><span class="file"> button/</span></div>
-      <div class="ft-row"><span class="ft-tree">    │   │   └──</span><span class="file"> modal/</span></div>
-      <div class="ft-row"><span class="ft-tree">    │   ├──</span><span class="dir"> pipes/</span></div>
-      <div class="ft-row"><span class="ft-tree">    │   │   └──</span><span class="file"> truncar.pipe.ts</span></div>
-      <div class="ft-row"><span class="ft-tree">    │   └──</span><span class="dir"> directives/</span></div>
-      <div class="ft-row"><span class="ft-tree">    │       └──</span><span class="file"> resaltar.directive.ts</span></div>
-      <div class="ft-row"><span class="ft-tree">    │</span></div>
-      <div class="ft-row"><span class="ft-tree">    └──</span><span class="dir"> features/</span><span class="note">           ← features cargados con lazy loading</span></div>
-      <div class="ft-row"><span class="ft-tree">        ├──</span><span class="dir"> usuarios/</span></div>
-      <div class="ft-row"><span class="ft-tree">        │   ├──</span><span class="file"> usuarios.routes.ts</span></div>
-      <div class="ft-row"><span class="ft-tree">        │   ├──</span><span class="dir"> components/</span></div>
-      <div class="ft-row"><span class="ft-tree">        │   ├──</span><span class="dir"> services/</span></div>
-      <div class="ft-row"><span class="ft-tree">        │   └──</span><span class="dir"> models/</span></div>
-      <div class="ft-row"><span class="ft-tree">        └──</span><span class="dir"> productos/</span></div>
-    </div>
-  </div>
-</div>
-</section>
-
-<!-- LIBRERÍAS -->
-<section id="librerias">
-<div class="container">
-  <div class="section-header"><div class="section-icon">🛠️</div><div><h2>Ecosistema de Herramientas</h2><p>Las librerías y herramientas más importantes del mundo Angular</p></div></div>
-  <div class="infograph">
-    <div class="infograph-title">📦 Librerías <span>esenciales</span> del ecosistema</div>
-    <div class="dep-grid">
-      <div class="dep-card"><div class="dep-name">Angular Material</div><div class="dep-desc">Biblioteca UI oficial de Google (Material Design 3). Botones, tablas, diálogos, formularios. Totalmente accesible y con theming con CSS custom properties.</div></div>
-      <div class="dep-card"><div class="dep-name">Angular CDK</div><div class="dep-desc">Kit de desarrollo de componentes. Drag & drop, virtual scrolling, overlays, portals, accessibility primitives. Base de Angular Material.</div></div>
-      <div class="dep-card"><div class="dep-name">NgRx SignalStore</div><div class="dep-desc">State management moderno con Signals. Mucho más simple que Redux. Ideal para apps medianas. El futuro del estado en Angular.</div></div>
-      <div class="dep-card"><div class="dep-name">NgRx Store + Effects</div><div class="dep-desc">State management estilo Redux. Store, Effects, Selectors, Entity. Para aplicaciones enterprise con lógica de estado compleja.</div></div>
-      <div class="dep-card"><div class="dep-name">TanStack Query (Angular)</div><div class="dep-desc">Caché de peticiones HTTP, estados de carga/error, invalidación y revalidación automática. Elimina gran parte del boilerplate de servicios HTTP.</div></div>
-      <div class="dep-card"><div class="dep-name">Angular Fire</div><div class="dep-desc">Integración oficial con Firebase. Auth, Firestore, Storage, Functions, Hosting. Ideal para prototipos y apps serverless.</div></div>
-      <div class="dep-card"><div class="dep-name">PrimeNG</div><div class="dep-desc">Suite completa de componentes UI. Tablas avanzadas, charts, tree, scheduler, calendar. Una de las más ricas del ecosistema Angular.</div></div>
-      <div class="dep-card"><div class="dep-name">Tailwind CSS</div><div class="dep-desc">Framework utility-first CSS. Compatible con Angular, fácil de configurar. Elimina la necesidad de CSS personalizado para la mayoría de casos.</div></div>
-      <div class="dep-card"><div class="dep-name">Transloco</div><div class="dep-desc">Internacionalización (i18n) moderna. Más flexible que i18n de Angular por defecto. Lazy loading de traducciones, múltiples idiomas simultáneos.</div></div>
-      <div class="dep-card"><div class="dep-name">Nx (Nrwl)</div><div class="dep-desc">Monorepo tools. Comparte código entre múltiples apps Angular, React, Node. Grafo de dependencias, affected commands. Para proyectos enterprise.</div></div>
-      <div class="dep-card"><div class="dep-name">Jest + jest-preset-angular</div><div class="dep-desc">Testing unitario rápido. Alternativa a Karma/Jasmine. Mejor experiencia de desarrollo, snapshots, coverage. Muy usado en proyectos modernos.</div></div>
-      <div class="dep-card"><div class="dep-name">Cypress / Playwright</div><div class="dep-desc">Testing E2E. Cypress tiene excelente integración con Angular. Playwright es más rápido y soporta múltiples navegadores. Component Testing disponible.</div></div>
-    </div>
-  </div>
-</div>
-</section>
-
-<!-- COMPARATIVA -->
-<section id="comparativa">
-<div class="container">
-  <div class="section-header"><div class="section-icon">⚖️</div><div><h2>Angular vs Otros Frameworks</h2><p>Cuándo elegir Angular y cuándo considerar alternativas</p></div></div>
-  <div class="infograph">
-    <div class="infograph-title">⚖️ <span>Angular</span> frente a React y Vue</div>
-    <div style="overflow-x:auto">
-      <table class="compare-table">
-        <thead><tr><th>Criterio</th><th>Angular</th><th>React</th><th>Vue 3</th></tr></thead>
-        <tbody>
-          <tr><td>Tipo</td><td>Framework completo</td><td>Librería UI</td><td>Framework progresivo</td></tr>
-          <tr><td>Curva de aprendizaje</td><td><span class="cross">✗</span> Alta (TS, DI, RxJS)</td><td><span class="check">✓</span> Media</td><td><span class="check">✓✓</span> Baja</td></tr>
-          <tr><td>TypeScript</td><td><span class="check">✓✓</span> Obligatorio, integrado</td><td>Opcional (muy usado)</td><td>Opcional (excelente soporte)</td></tr>
-          <tr><td>Todo incluido</td><td><span class="check">✓✓</span> Router, HTTP, Forms, DI</td><td><span class="cross">✗</span> Eliges librerías</td><td><span class="check">✓</span> Casi todo incluido</td></tr>
-          <tr><td>Performance</td><td><span class="check">✓✓</span> Excelente con Signals+OnPush</td><td><span class="check">✓</span> Muy bueno</td><td><span class="check">✓✓</span> Excelente</td></tr>
-          <tr><td>Enterprise</td><td><span class="check">✓✓</span> Dominante</td><td><span class="check">✓✓</span> Muy fuerte</td><td><span class="check">✓</span> Fuerte en Asia</td></tr>
-          <tr><td>Opinado / Estructura</td><td><span class="check">✓✓</span> Muy opinado (1 sola forma)</td><td><span class="cross">✗</span> Poco opinado</td><td>Moderado</td></tr>
-          <tr><td>Mantenedor</td><td>Google</td><td>Meta (Facebook)</td><td>Comunidad (Evan You)</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <div style="margin-top:14px;font-size:12px;color:var(--text-dim)">💡 <strong style="color:var(--text)">Regla de oro:</strong> Angular brilla en equipos grandes donde la consistencia y la estructura son clave. React cuando la flexibilidad importa. Vue para rapidez y curva suave.</div>
-  </div>
-
-  <div class="infograph">
-    <div class="infograph-title">📅 Evolución de <span>Angular</span> — versiones clave</div>
-    <div class="lifecycle">
-      <div class="lc-step"><div class="lc-label">Angular 2 (2016)</div><div class="lc-desc"><strong>Reescritura total.</strong> TypeScript, componentes, DI jerárquico. Ruptura total con AngularJS (1.x).</div></div>
-      <div class="lc-step"><div class="lc-label">Angular 9 (2020)</div><div class="lc-desc"><strong>Ivy compiler.</strong> Compilador por defecto. Bundles más pequeños, mejor debugging y tree-shaking.</div></div>
-      <div class="lc-step"><div class="lc-label">Angular 14 (2022)</div><div class="lc-desc"><strong>Standalone Components.</strong> inject() function. Typed Reactive Forms. El inicio del Angular moderno.</div></div>
-      <div class="lc-step"><div class="lc-label">Angular 16 (2023)</div><div class="lc-desc"><strong>Signals en developer preview.</strong> Required inputs. SSR mejorado. takeUntilDestroyed(). DestroyRef.</div></div>
-      <div class="lc-step"><div class="lc-label">Angular 17 (2023)</div><div class="lc-desc"><strong>Nueva sintaxis @if/@for/@switch.</strong> @defer. Signals estables. Standalone por defecto. Nueva web angular.dev.</div></div>
-      <div class="lc-step"><div class="lc-label">Angular 18-19 (2024)</div><div class="lc-desc"><strong>Signal inputs/outputs/queries.</strong> Zoneless (experimental). HMR mejorado. Material 3 estable. SSR con hydration.</div></div>
-    </div>
-    <div style="margin-top:14px;font-size:12px;color:var(--text-dim)">💡 Angular sigue un ciclo de <strong style="color:var(--text)">2 versiones mayores por año</strong> (cada 6 meses). Política LTS de 18 meses. Angular 21 se esperaría en 2025.</div>
-  </div>
-</div>
-</section>
-
-<footer>
-  <div>🅰️ Angular — Guía Práctica · Hecha para devs, por devs</div>
-  <div style="margin-top:8px;color:#374151">Component → Service → Signal → Router → HTTP → DOM</div>
-</footer>
+// Smooth scroll nav
+navItems.forEach(item => {
+  item.addEventListener('click', e => {
+    e.preventDefault();
+    const target = document.querySelector(item.getAttribute('href'));
+    if (target) {
+      main.scrollTo({ top: target.offsetTop - 80, behavior: 'smooth' });
+    }
+  });
+});
+</script>
 </body>
 </html>
