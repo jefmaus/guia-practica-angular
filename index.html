@@ -716,6 +716,31 @@ tr:hover td { background: var(--bg3); }
 </style>
 </head>
 <body>
+<script>
+// Scroll suave dentro del <main> para anchors del menú lateral
+document.addEventListener('DOMContentLoaded', function() {
+  const main = document.querySelector('main.main');
+  if (!main) return;
+  document.querySelectorAll('.sidebar .nav-item[href^="#"]').forEach(link => {
+    link.addEventListener('click', function(e) {
+      const id = this.getAttribute('href').slice(1);
+      const target = main.querySelector(`#${id}`);
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+        // Opcional: ajustar scroll si hay topbar fija
+        setTimeout(() => {
+          main.scrollBy({top: -24, behavior: 'instant'});
+        }, 400);
+        history.replaceState(null, '', '#' + id);
+      }
+    });
+  });
+});
+</script>
 <div class="app-layout">
 
 <!-- TOPBAR -->
